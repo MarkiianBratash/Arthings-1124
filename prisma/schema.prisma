@@ -2,14 +2,14 @@
 // Arthings - Prisma Schema
 // ===========================================
 // This file defines the database schema for the Arthings rental platform.
-// Heroku Postgres is used as the database provider.
+// Supports: local MariaDB (arthings) and cloud MySQL for Vercel (e.g. PlanetScale, Railway).
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 

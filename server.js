@@ -4,7 +4,7 @@
  * ===========================================
  * 
  * Peer-to-peer rental platform for local communities
- * Database: Neon Postgres
+ * Database: MariaDB (local) / MySQL (Vercel via env DATABASE_URL)
  */
 
 // Load environment variables first
@@ -144,20 +144,22 @@ process.on('SIGTERM', async () => {
     process.exit(0);
 });
 
-// Start server
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`
+// Start server only when not on Vercel (serverless uses exported app)
+if (!process.env.VERCEL) {
+    app.listen(PORT, '0.0.0.0', () => {
+        console.log(`
     ╔═══════════════════════════════════════════════════════════╗
     ║                                                           ║
     ║   🎯 ARTHINGS - Rental Platform                          ║
     ║                                                           ║
     ║   Server running at: http://localhost:${PORT}               ║
-    ║   Database: MariaDB (via Prisma)                         ║
+    ║   Database: MariaDB / MySQL (via Prisma)                 ║
     ║                                                           ║
     ║   Ready to connect communities!                          ║
     ║                                                           ║
     ╚═══════════════════════════════════════════════════════════╝
     `);
-});
+    });
+}
 
 module.exports = app;

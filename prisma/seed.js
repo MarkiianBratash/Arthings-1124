@@ -1,9 +1,9 @@
-﻿/**
+/**
  * ===========================================
  * Arthings - Database Seed Script
  * ===========================================
  * 
- * Seeds Neon Postgres database with default data
+ * Seeds MySQL/MariaDB database with default data
  * Run with: npm run db:seed
  */
 
