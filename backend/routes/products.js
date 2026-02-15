@@ -15,20 +15,22 @@ const prisma = require('../db/db');
 
 const router = express.Router();
 
-// Multer configuration for image uploads
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        const uploadDir = path.join(__dirname, '../../uploads');
-        if (!fs.existsSync(uploadDir)) {
-            fs.mkdirSync(uploadDir, { recursive: true });
+// Multer: use memory storage on Vercel (read-only FS), disk storage locally
+const isVercel = !!process.env.VERCEL;
+const storage = isVercel
+    ? multer.memoryStorage()
+    : multer.diskStorage({
+        destination: (req, file, cb) => {
+            const uploadDir = path.join(__dirname, '../../uploads');
+            if (!fs.existsSync(uploadDir)) {
+                fs.mkdirSync(uploadDir, { recursive: true });
+            }
+            cb(null, uploadDir);
+        },
+        filename: (req, file, cb) => {
+            cb(null, uuidv4() + path.extname(file.originalname));
         }
-        cb(null, uploadDir);
-    },
-    filename: (req, file, cb) => {
-        const uniqueName = uuidv4() + path.extname(file.originalname);
-        cb(null, uniqueName);
-    }
-});
+    });
 
 const upload = multer({
     storage,
@@ -42,6 +44,30 @@ const upload = multer({
         }
     }
 });
+
+/** Save uploaded images: disk path locally, Vercel Blob URL on Vercel */
+async function saveUploadedImages(files) {
+    if (isVercel && process.env.BLOB_READ_WRITE_TOKEN) {
+        const { put } = require('@vercel/blob');
+        const paths = [];
+        for (let i = 0; i < files.length; i++) {
+            const f = files[i];
+            const ext = path.extname(f.originalname) || '.jpg';
+            const blob = await put(`uploads/${uuidv4()}${ext}`, f.buffer, {
+                access: 'public',
+                contentType: f.mimetype
+            });
+            paths.push(blob.url);
+        }
+        return paths;
+    }
+    if (isVercel) {
+        // No Blob token - can't persist images on Vercel; allow listing without images
+        return [];
+    }
+    // Local disk storage: files have .filename
+    return files.map(f => '/uploads/' + f.filename);
+}
 
 /**
  * GET /api/products
@@ -254,11 +280,12 @@ router.post('/', upload.array('images', 5), async (req, res) => {
 
             // Create image records
             if (req.files && req.files.length > 0) {
-                for (let i = 0; i < req.files.length; i++) {
+                const imagePaths = await saveUploadedImages(req.files);
+                for (let i = 0; i < imagePaths.length; i++) {
                     await tx.itemImage.create({
                         data: {
                             itemId: product.id,
-                            imagePath: '/uploads/' + req.files[i].filename,
+                            imagePath: imagePaths[i],
                             sortOrder: i
                         }
                     });
@@ -294,7 +321,7 @@ router.post('/', upload.array('images', 5), async (req, res) => {
 
     } catch (error) {
         console.error('Create product error:', error);
-        res.status(500).json({ error: 'Failed to create product' });
+        res.status(500).json({ error: error.message || 'Failed to create product' });
     }
 });
 
@@ -351,18 +378,17 @@ router.put('/:id', upload.array('images', 5), async (req, res) => {
 
             // Add new images if uploaded
             if (req.files && req.files.length > 0) {
-                // Get current max sort order
                 const lastImage = await tx.itemImage.findFirst({
                     where: { itemId: numericId },
                     orderBy: { sortOrder: 'desc' }
                 });
                 const startOrder = lastImage ? lastImage.sortOrder + 1 : 0;
-
-                for (let i = 0; i < req.files.length; i++) {
+                const imagePaths = await saveUploadedImages(req.files);
+                for (let i = 0; i < imagePaths.length; i++) {
                     await tx.itemImage.create({
                         data: {
                             itemId: product.id,
-                            imagePath: '/uploads/' + req.files[i].filename,
+                            imagePath: imagePaths[i],
                             sortOrder: startOrder + i
                         }
                     });

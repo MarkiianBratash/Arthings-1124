@@ -50,6 +50,7 @@ npm run dev
 |----------|----------|-------------|
 | `DATABASE_URL` | Yes | Postgres connection string (set by Vercel when you connect the DB) |
 | `SESSION_SECRET` | Yes | Random string for sessions (set in Vercel env) |
+| `BLOB_READ_WRITE_TOKEN` | For image uploads | Add **Vercel Blob** in Storage tab to enable image uploads on new listings |
 | `ADMIN_EMAIL` | No | Email for admin account |
 
 ---
