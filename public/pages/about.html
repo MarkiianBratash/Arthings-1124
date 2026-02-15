@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="About Arthings - Local community rental platform">
+    <title>About Us - Arthings</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="icon" type="image/png" href="/assets/images/logo.png">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="navbar-brand">
+                <img src="/assets/images/logo.png" alt="Arthings" class="navbar-logo">
+                <span class="navbar-title">Arthings</span>
+            </a>
+
+            <div class="navbar-nav">
+                <a href="/" class="nav-link" data-i18n="nav.home">Home</a>
+                <a href="/pages/map.html" class="nav-link" data-i18n="nav.map">Map</a>
+                <a href="/pages/about.html" class="nav-link active" data-i18n="nav.about">About</a>
+                <a href="/pages/contact.html" class="nav-link" data-i18n="nav.contact">Contact</a>
+            </div>
+
+            <div class="navbar-actions">
+                <div class="lang-switcher">
+                    <button class="lang-btn active" data-lang="en">EN</button>
+                    <button class="lang-btn" data-lang="uk">UK</button>
+                </div>
+
+                <!-- Auth Links (when logged out) -->
+                <div id="auth-links">
+                    <a href="/pages/login.html" class="btn btn-ghost" data-i18n="nav.login">Log In</a>
+                    <a href="/pages/register.html" class="btn btn-primary" data-i18n="nav.register">Sign Up</a>
+                </div>
+
+                <!-- User Links (when logged in) -->
+                <div id="user-links" class="hidden">
+                    <a href="/pages/add-item.html" class="btn btn-primary" data-i18n="nav.addItem">Add Item</a>
+                    <div class="user-dropdown">
+                        <button class="btn btn-ghost user-menu-btn">
+                            <span id="user-name">User</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="/pages/profile.html" data-i18n="nav.profile">Profile</a>
+                            <a href="/pages/my-listings.html" data-i18n="nav.myListings">My Listings</a>
+                            <a href="/pages/favorites.html" data-i18n="nav.favorites">Favorites</a>
+                            <hr>
+                            <a href="#" class="logout-btn" data-i18n="nav.logout">Log Out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav">
+        <a href="/" class="mobile-nav-link" data-i18n="nav.home">Home</a>
+        <a href="/pages/map.html" class="mobile-nav-link" data-i18n="nav.map">Map</a>
+        <a href="/pages/about.html" class="mobile-nav-link" data-i18n="nav.about">About</a>
+        <a href="/pages/contact.html" class="mobile-nav-link" data-i18n="nav.contact">Contact</a>
+        <hr>
+        <div id="mobile-auth-links">
+            <a href="/pages/login.html" class="mobile-nav-link" data-i18n="nav.login">Log In</a>
+            <a href="/pages/register.html" class="mobile-nav-link" data-i18n="nav.register">Sign Up</a>
+        </div>
+        <div id="mobile-user-links" class="hidden">
+            <a href="/pages/add-item.html" class="mobile-nav-link" data-i18n="nav.addItem">Add Item</a>
+            <a href="/pages/profile.html" class="mobile-nav-link" data-i18n="nav.profile">Profile</a>
+            <a href="/pages/my-listings.html" class="mobile-nav-link" data-i18n="nav.myListings">My Listings</a>
+            <a href="/pages/favorites.html" class="mobile-nav-link" data-i18n="nav.favorites">Favorites</a>
+            <a href="#" class="mobile-nav-link logout-btn" data-i18n="nav.logout">Log Out</a>
+        </div>
+    </div>
+
+    <!-- Hero -->
+    <div class="page-header" style="min-height: 40vh; display: flex; align-items: center;">
+        <div class="container" style="text-align: center;">
+            <h1 style="font-size: 3rem;" data-i18n="about.title">About Arthings</h1>
+            <p style="font-size: 1.25rem; color: var(--color-gray-300); max-width: 600px; margin: 1rem auto 0;"
+                data-i18n="about.heroSubtitle">
+                Empowering communities through shared resources
+            </p>
+        </div>
+    </div>
+
+    <!-- Mission -->
+    <section class="section">
+        <div class="container" style="max-width: 800px;">
+            <div class="section-header">
+                <h2 data-i18n="about.mission">Our Mission</h2>
+            </div>
+            <p style="font-size: 1.125rem; line-height: 1.8; text-align: center; color: var(--color-gray-700);"
+                data-i18n="about.missionText">
+                Arthings connects local communities through shared resources. We believe that sharing leads to stronger
+                communities and more sustainable living. Our platform makes it easy to rent everyday items from your
+                neighbors, reducing waste and building connections.
+            </p>
+        </div>
+    </section>
+
+    <!-- Values -->
+    <section class="section" style="background: var(--color-gray-100);">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-i18n="about.values">Our Values</h2>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
+                <div class="card" style="padding: 2.5rem; text-align: center;">
+                    <div
+                        style="width: 80px; height: 80px; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <h3 style="margin-bottom: 1rem;" data-i18n="about.community">Community First</h3>
+                    <p data-i18n="about.communityText">Building connections between neighbors and fostering trust within
+                        local communities.</p>
+                </div>
+
+                <div class="card" style="padding: 2.5rem; text-align: center;">
+                    <div
+                        style="width: 80px; height: 80px; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            <polyline points="9 12 11 14 15 10"></polyline>
+                        </svg>
+                    </div>
+                    <h3 style="margin-bottom: 1rem;" data-i18n="about.trust">Trust & Safety</h3>
+                    <p data-i18n="about.trustText">Verified users, transparent reviews, and secure communication for
+                        peace of mind.</p>
+                </div>
+
+                <div class="card" style="padding: 2.5rem; text-align: center;">
+                    <div
+                        style="width: 80px; height: 80px; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                        </svg>
+                    </div>
+                    <h3 style="margin-bottom: 1rem;" data-i18n="about.sustainability">Sustainability</h3>
+                    <p data-i18n="about.sustainabilityText">Reducing waste and consumption by maximizing the use of
+                        existing resources.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-i18n="howItWorks.title">How It Works</h2>
+            </div>
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; max-width: 900px; margin: 0 auto;">
+                <div style="text-align: center;">
+                    <div
+                        style="width: 60px; height: 60px; background: var(--color-primary-alpha); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.5rem; font-weight: bold; color: var(--color-primary);">
+                        1</div>
+                    <h4 style="margin-bottom: 0.5rem;" data-i18n="howItWorks.step1.title">Browse Items</h4>
+                    <p style="font-size: 0.875rem;" data-i18n="howItWorks.step1.text">Search for what you need in your
+                        local area</p>
+                </div>
+                <div style="text-align: center;">
+                    <div
+                        style="width: 60px; height: 60px; background: var(--color-primary-alpha); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.5rem; font-weight: bold; color: var(--color-primary);">
+                        2</div>
+                    <h4 style="margin-bottom: 0.5rem;" data-i18n="howItWorks.step2.title">Request Rental</h4>
+                    <p style="font-size: 0.875rem;" data-i18n="howItWorks.step2.text">Send a rental request with your
+                        dates</p>
+                </div>
+                <div style="text-align: center;">
+                    <div
+                        style="width: 60px; height: 60px; background: var(--color-primary-alpha); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.5rem; font-weight: bold; color: var(--color-primary);">
+                        3</div>
+                    <h4 style="margin-bottom: 0.5rem;" data-i18n="howItWorks.step3.title">Pick Up & Enjoy</h4>
+                    <p style="font-size: 0.875rem;" data-i18n="howItWorks.step3.text">Meet your neighbor and get what
+                        you need</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section" style="background: var(--gradient-hero); text-align: center;">
+        <div class="container">
+            <h2 style="color: white; margin-bottom: 1rem;" data-i18n="cta.ready">Ready to join our community?</h2>
+            <p style="color: var(--color-gray-300); margin-bottom: 2rem;" data-i18n="cta.start">Start sharing and
+                renting today</p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="/" class="btn btn-primary btn-lg" data-i18n="hero.cta.browse">Browse Items</a>
+                <a href="/pages/register.html" class="btn btn-outline btn-lg"
+                    style="border-color: rgba(255,255,255,0.3); color: white;" data-i18n="cta.join">Join Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                            <circle cx="20" cy="20" r="18" stroke="#00d1cd" stroke-width="3" />
+                            <path d="M12 20h16M20 12v16" stroke="#00d1cd" stroke-width="3" stroke-linecap="round" />
+                        </svg>
+                        <span>Arthings</span>
+                    </div>
+                    <p data-i18n="footer.description">Connect with your community. Rent what you need, share what you
+                        have.</p>
+                </div>
+                <div class="footer-column">
+                    <h4 data-i18n="footer.platform">Platform</h4>
+                    <div class="footer-links">
+                        <a href="/" data-i18n="nav.home">Home</a>
+                        <a href="/pages/map.html" data-i18n="nav.map">Map</a>
+                        <a href="/pages/about.html" data-i18n="nav.about">About</a>
+                        <a href="/pages/contact.html" data-i18n="nav.contact">Contact</a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4 data-i18n="footer.support">Support</h4>
+                    <div class="footer-links">
+                        <a href="#" data-i18n="footer.helpCenter">Help Center</a>
+                        <a href="#" data-i18n="footer.faq">FAQ</a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4 data-i18n="footer.legal">Legal</h4>
+                    <div class="footer-links">
+                        <a href="#" class="legal-link" data-legal="public-offer" data-i18n="legal.publicOffer">Public
+                            Offer</a>
+                        <a href="#" class="legal-link" data-legal="privacy-policy"
+                            data-i18n="legal.privacyPolicy">Privacy Policy</a>
+                        <a href="#" class="legal-link" data-legal="terms-of-performance"
+                            data-i18n="legal.termsOfPerformance">Terms of Use</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p data-i18n="footer.copyright">© 2025 Arthings. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="/components/legal-modal.js"></script>
+    <script src="/components/cookie-banner.js"></script>
+    <script src="/assets/js/i18n.js"></script>
+    <script src="/assets/js/main.js"></script>
+</body>
+
+</html>

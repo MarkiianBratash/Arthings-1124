@@ -1,0 +1,263 @@
+// ===========================================
+// Arthings - Prisma Schema
+// ===========================================
+// This file defines the database schema for the Arthings rental platform.
+// Heroku Postgres is used as the database provider.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ===========================================
+// User Model
+// ===========================================
+// Stores registered users of the platform
+
+model User {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique @db.VarChar(255)
+  passwordHash String   @map("password_hash") @db.VarChar(255)
+  name         String   @db.VarChar(255)
+  phone        String?  @db.VarChar(50)
+  city         String?  @db.VarChar(100)
+  avatar       String?  @db.VarChar(500)
+  isVerified   Boolean  @default(false) @map("is_verified")
+  isAdmin      Boolean  @default(false) @map("is_admin")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  items              Item[]
+  rentalsAsRenter    Rental[]        @relation("RenterRentals")
+  favorites          Favorite[]
+  legalConsents      LegalConsent[]
+  ratingsGiven       Rating[]        @relation("RatingFrom")
+  ratingsReceived    Rating[]        @relation("RatingTo")
+  rentalRequests     RentalRequest[]
+
+  @@map("users")
+}
+
+// ===========================================
+// Item Model
+// ===========================================
+// Stores all rentable items on the platform
+
+model Item {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @map("user_id")
+  title       String   @db.VarChar(255)
+  description String   @db.Text
+  pricePerDay Decimal  @map("price_per_day") @db.Decimal(10, 2)
+  priceUnit   String   @default("day") @map("price_unit") @db.VarChar(20)
+  category    String   @db.VarChar(50)
+  city        String?  @db.VarChar(100)
+  isAvailable Boolean  @default(true) @map("is_available")
+  views       Int      @default(0)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  images    ItemImage[]
+  rentals   Rental[]
+  favorites Favorite[]
+
+  @@index([userId])
+  @@index([category])
+  @@index([city])
+  @@map("items")
+}
+
+// ===========================================
+// Item Image Model
+// ===========================================
+// Allows multiple images per item
+
+model ItemImage {
+  id        Int      @id @default(autoincrement())
+  itemId    Int      @map("item_id")
+  imagePath String   @map("image_path") @db.VarChar(500)
+  sortOrder Int      @default(0) @map("sort_order")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  item Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@index([itemId])
+  @@map("item_images")
+}
+
+// ===========================================
+// Rental Model
+// ===========================================
+// Tracks the rental lifecycle
+
+enum RentalStatus {
+  pending
+  approved
+  declined
+  completed
+  cancelled
+}
+
+model Rental {
+  id          Int          @id @default(autoincrement())
+  itemId      Int          @map("item_id")
+  renterId    Int          @map("renter_id")
+  startDate   DateTime     @map("start_date") @db.Date
+  endDate     DateTime     @map("end_date") @db.Date
+  days        Int
+  pricePerDay Decimal      @map("price_per_day") @db.Decimal(10, 2)
+  totalPrice  Decimal      @map("total_price") @db.Decimal(10, 2)
+  message     String?      @db.Text
+  status      RentalStatus @default(pending)
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+
+  // Relations
+  item    Item    @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  renter  User    @relation("RenterRentals", fields: [renterId], references: [id], onDelete: Cascade)
+  ratings Rating[]
+
+  @@index([itemId])
+  @@index([renterId])
+  @@index([status])
+  @@map("rentals")
+}
+
+// ===========================================
+// Rating Model
+// ===========================================
+// Ratings given after completed rentals (owner rates renter, renter rates owner)
+
+model Rating {
+  id        Int      @id @default(autoincrement())
+  rentalId  Int      @map("rental_id")
+  fromUserId Int     @map("from_user_id")
+  toUserId  Int      @map("to_user_id")
+  score     Int      // 1-5
+  comment   String?  @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  rental    Rental @relation(fields: [rentalId], references: [id], onDelete: Cascade)
+  fromUser  User   @relation("RatingFrom", fields: [fromUserId], references: [id], onDelete: Cascade)
+  toUser    User   @relation("RatingTo", fields: [toUserId], references: [id], onDelete: Cascade)
+
+  @@unique([rentalId, fromUserId, toUserId])
+  @@index([toUserId])
+  @@index([rentalId])
+  @@map("ratings")
+}
+
+// ===========================================
+// Rental Request Model
+// ===========================================
+// "I want to rent X" - public requests so owners can see demand
+
+model RentalRequest {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @map("user_id")
+  title       String   @db.VarChar(255)
+  description String   @db.Text
+  category    String?  @db.VarChar(50)
+  city        String?  @db.VarChar(100)
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([category])
+  @@index([city])
+  @@map("rental_requests")
+}
+
+// ===========================================
+// Favorite Model
+// ===========================================
+// User favorites (many-to-many relationship)
+
+model Favorite {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  itemId    Int      @map("item_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  item Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, itemId])
+  @@index([userId])
+  @@index([itemId])
+  @@map("favorites")
+}
+
+// ===========================================
+// Legal Consent Model
+// ===========================================
+// Stores user acceptance of legal documents
+
+model LegalConsent {
+  id              Int      @id @default(autoincrement())
+  userId          Int      @map("user_id")
+  documentType    String   @map("document_type") @db.VarChar(50)
+  documentVersion String   @map("document_version") @db.VarChar(20)
+  ipAddress       String?  @map("ip_address") @db.VarChar(45)
+  userAgent       String?  @map("user_agent") @db.VarChar(500)
+  acceptedAt      DateTime @default(now()) @map("accepted_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([documentType, documentVersion])
+  @@map("legal_consents")
+}
+
+// ===========================================
+// Category Model
+// ===========================================
+// Predefined categories with translations
+
+model Category {
+  id     String @id @db.VarChar(50)
+  name   String @db.VarChar(100)
+  nameUk String @map("name_uk") @db.VarChar(100)
+  icon   String @db.VarChar(10)
+
+  @@map("categories")
+}
+
+// ===========================================
+// City Model
+// ===========================================
+// Predefined list of cities
+
+model City {
+  id   Int    @id @default(autoincrement())
+  name String @unique @db.VarChar(100)
+
+  @@map("cities")
+}
+
+// ===========================================
+// Legal Document Model
+// ===========================================
+// Metadata for legal documents
+
+model LegalDocument {
+  type      String   @id @db.VarChar(50)
+  version   String   @db.VarChar(20)
+  file      String   @db.VarChar(255)
+  updatedAt DateTime @map("updated_at")
+
+  @@map("legal_documents")
+}

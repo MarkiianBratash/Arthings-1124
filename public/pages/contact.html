@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contact Arthings - We'd love to hear from you">
+    <title>Contact Us - Arthings</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="icon" type="image/png" href="/assets/images/logo.png">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="navbar-brand">
+                <img src="/assets/images/logo.png" alt="Arthings" class="navbar-logo">
+                <span class="navbar-title">Arthings</span>
+            </a>
+
+            <div class="navbar-nav">
+                <a href="/" class="nav-link" data-i18n="nav.home">Home</a>
+                <a href="/pages/map.html" class="nav-link" data-i18n="nav.map">Map</a>
+                <a href="/pages/about.html" class="nav-link" data-i18n="nav.about">About</a>
+                <a href="/pages/contact.html" class="nav-link active" data-i18n="nav.contact">Contact</a>
+            </div>
+
+            <div class="navbar-actions">
+                <div class="lang-switcher">
+                    <button class="lang-btn active" data-lang="en">EN</button>
+                    <button class="lang-btn" data-lang="uk">UK</button>
+                </div>
+
+                <!-- Auth Links (when logged out) -->
+                <div id="auth-links">
+                    <a href="/pages/login.html" class="btn btn-ghost" data-i18n="nav.login">Log In</a>
+                    <a href="/pages/register.html" class="btn btn-primary" data-i18n="nav.register">Sign Up</a>
+                </div>
+
+                <!-- User Links (when logged in) -->
+                <div id="user-links" class="hidden">
+                    <a href="/pages/add-item.html" class="btn btn-primary" data-i18n="nav.addItem">Add Item</a>
+                    <div class="user-dropdown">
+                        <button class="btn btn-ghost user-menu-btn">
+                            <span id="user-name">User</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="/pages/profile.html" data-i18n="nav.profile">Profile</a>
+                            <a href="/pages/my-listings.html" data-i18n="nav.myListings">My Listings</a>
+                            <a href="/pages/favorites.html" data-i18n="nav.favorites">Favorites</a>
+                            <hr>
+                            <a href="#" class="logout-btn" data-i18n="nav.logout">Log Out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav">
+        <a href="/" class="mobile-nav-link" data-i18n="nav.home">Home</a>
+        <a href="/pages/map.html" class="mobile-nav-link" data-i18n="nav.map">Map</a>
+        <a href="/pages/about.html" class="mobile-nav-link" data-i18n="nav.about">About</a>
+        <a href="/pages/contact.html" class="mobile-nav-link" data-i18n="nav.contact">Contact</a>
+        <hr>
+        <div id="mobile-auth-links">
+            <a href="/pages/login.html" class="mobile-nav-link" data-i18n="nav.login">Log In</a>
+            <a href="/pages/register.html" class="mobile-nav-link" data-i18n="nav.register">Sign Up</a>
+        </div>
+        <div id="mobile-user-links" class="hidden">
+            <a href="/pages/add-item.html" class="mobile-nav-link" data-i18n="nav.addItem">Add Item</a>
+            <a href="/pages/profile.html" class="mobile-nav-link" data-i18n="nav.profile">Profile</a>
+            <a href="/pages/my-listings.html" class="mobile-nav-link" data-i18n="nav.myListings">My Listings</a>
+            <a href="/pages/favorites.html" class="mobile-nav-link" data-i18n="nav.favorites">Favorites</a>
+            <a href="#" class="mobile-nav-link logout-btn" data-i18n="nav.logout">Log Out</a>
+        </div>
+    </div>
+
+    <!-- Hero -->
+    <div class="page-header">
+        <div class="container" style="text-align: center;">
+            <h1 data-i18n="contact.title">Contact Us</h1>
+            <p style="color: var(--color-gray-300);" data-i18n="contact.subtitle">We'd love to hear from you</p>
+        </div>
+    </div>
+
+    <!-- Contact Section -->
+    <section class="section" style="padding-top: 0;">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; max-width: 1000px; margin: 0 auto;">
+                <!-- Contact Form -->
+                <div class="card" style="padding: 2.5rem;">
+                    <h3 style="margin-bottom: 1.5rem;" data-i18n="contact.formTitle">Send us a message</h3>
+                    <form id="contact-form">
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="contact.name">Your Name</label>
+                            <input type="text" id="name" class="form-input" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="contact.email">Your Email</label>
+                            <input type="email" id="email" class="form-input" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="contact.subject">Subject</label>
+                            <input type="text" id="subject" class="form-input" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="contact.message">Message</label>
+                            <textarea id="message" class="form-input form-textarea" rows="5" required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;"
+                            data-i18n="contact.send">Send Message</button>
+                    </form>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h3 style="margin-bottom: 1.5rem;" data-i18n="contact.info">Contact Information</h3>
+
+                    <div style="display: flex; flex-direction: column; gap: 2rem;">
+                        <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                            <div
+                                style="width: 48px; height: 48px; background: var(--color-primary-alpha); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    stroke="var(--color-primary)" stroke-width="2">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 style="margin-bottom: 0.25rem;" data-i18n="contact.info">Address</h4>
+                                <p data-i18n="contact.address">Kyiv, Ukraine</p>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                            <div
+                                style="width: 48px; height: 48px; background: var(--color-primary-alpha); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    stroke="var(--color-primary)" stroke-width="2">
+                                    <path
+                                        d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                                    </path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 style="margin-bottom: 0.25rem;" data-i18n="auth.register.email">Email</h4>
+                                <p data-i18n="contact.email">hello@arthings.com</p>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                            <div
+                                style="width: 48px; height: 48px; background: var(--color-primary-alpha); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    stroke="var(--color-primary)" stroke-width="2">
+                                    <path
+                                        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 style="margin-bottom: 0.25rem;" data-i18n="auth.register.phone">Phone</h4>
+                                <p data-i18n="contact.phone">+380 (50) 123-4567</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        style="margin-top: 3rem; padding: 2rem; background: var(--color-gray-50); border-radius: var(--radius-xl);">
+                        <h4 style="margin-bottom: 0.5rem;" data-i18n="contact.businessHours">Business Hours</h4>
+                        <p style="font-size: 0.875rem; color: var(--color-gray-600);">
+                            <span data-i18n="contact.hours.weekdays">Monday - Friday: 9:00 AM - 6:00 PM</span><br>
+                            <span data-i18n="contact.hours.saturday">Saturday: 10:00 AM - 4:00 PM</span><br>
+                            <span data-i18n="contact.hours.sunday">Sunday: Closed</span>
+                        </p>
+                    </div>
+
+                    <div style="margin-top: 2rem;">
+                        <h4 style="margin-bottom: 1rem;" data-i18n="contact.followUs">Follow Us</h4>
+                        <div style="display: flex; gap: 0.75rem;">
+                            <a href="#"
+                                style="width: 44px; height: 44px; background: var(--color-gray-100); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; transition: all 0.2s;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--color-gray-600)">
+                                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                                </svg>
+                            </a>
+                            <a href="#"
+                                style="width: 44px; height: 44px; background: var(--color-gray-100); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; transition: all 0.2s;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--color-gray-600)">
+                                    <path
+                                        d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" />
+                                </svg>
+                            </a>
+                            <a href="#"
+                                style="width: 44px; height: 44px; background: var(--color-gray-100); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; transition: all 0.2s;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    stroke="var(--color-gray-600)" stroke-width="2">
+                                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                            <circle cx="20" cy="20" r="18" stroke="#00d1cd" stroke-width="3" />
+                            <path d="M12 20h16M20 12v16" stroke="#00d1cd" stroke-width="3" stroke-linecap="round" />
+                        </svg>
+                        <span>Arthings</span>
+                    </div>
+                    <p data-i18n="footer.description">Connect with your community. Rent what you need, share what you
+                        have.</p>
+                </div>
+                <div class="footer-column">
+                    <h4 data-i18n="footer.platform">Platform</h4>
+                    <div class="footer-links">
+                        <a href="/" data-i18n="nav.home">Home</a>
+                        <a href="/pages/map.html" data-i18n="nav.map">Map</a>
+                        <a href="/pages/about.html" data-i18n="nav.about">About</a>
+                        <a href="/pages/contact.html" data-i18n="nav.contact">Contact</a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4 data-i18n="footer.support">Support</h4>
+                    <div class="footer-links">
+                        <a href="#" data-i18n="footer.helpCenter">Help Center</a>
+                        <a href="#" data-i18n="footer.faq">FAQ</a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4 data-i18n="footer.legal">Legal</h4>
+                    <div class="footer-links">
+                        <a href="#" class="legal-link" data-legal="public-offer" data-i18n="legal.publicOffer">Public
+                            Offer</a>
+                        <a href="#" class="legal-link" data-legal="privacy-policy"
+                            data-i18n="legal.privacyPolicy">Privacy Policy</a>
+                        <a href="#" class="legal-link" data-legal="terms-of-performance"
+                            data-i18n="legal.termsOfPerformance">Terms of Use</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p data-i18n="footer.copyright">© 2025 Arthings. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="/components/legal-modal.js"></script>
+    <script src="/components/cookie-banner.js"></script>
+    <script src="/assets/js/i18n.js"></script>
+    <script src="/assets/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+
+            document.getElementById('contact-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const name = document.getElementById('name').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const subject = document.getElementById('subject').value.trim();
+                const message = document.getElementById('message').value.trim();
+
+                // Simulate form submission (no backend endpoint for contact form)
+                const submitBtn = e.target.querySelector('button[type="submit"]');
+                submitBtn.disabled = true;
+                submitBtn.textContent = i18n.t('common.loading');
+
+                // Simulate delay
+                await new Promise(resolve => setTimeout(resolve, 1000));
+
+                showToast('success', i18n.t('contact.success'));
+                e.target.reset();
+                submitBtn.disabled = false;
+                submitBtn.textContent = i18n.t('contact.send');
+            });
+        });
+    </script>
+
+    <style>
+        @media (max-width: 768px) {
+            [style*="grid-template-columns: 1fr 1fr"] {
+                grid-template-columns: 1fr !important;
+                gap: 2rem !important;
+            }
+        }
+    </style>
+</body>
+
+</html>

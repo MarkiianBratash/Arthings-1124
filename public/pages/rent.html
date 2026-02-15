@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Rent an item on Arthings">
+    <title>Rent Item - Arthings</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="icon" type="image/png" href="/assets/images/logo.png">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="navbar-brand">
+                <img src="/assets/images/logo.png" alt="Arthings" class="navbar-logo">
+                <span class="navbar-title">Arthings</span>
+            </a>
+
+            <div class="navbar-nav">
+                <a href="/" class="nav-link" data-i18n="nav.home">Home</a>
+                <a href="/pages/map.html" class="nav-link" data-i18n="nav.map">Map</a>
+                <a href="/pages/about.html" class="nav-link" data-i18n="nav.about">About</a>
+                <a href="/pages/contact.html" class="nav-link" data-i18n="nav.contact">Contact</a>
+            </div>
+
+            <div class="navbar-actions">
+                <div class="lang-switcher">
+                    <button class="lang-btn active" data-lang="en">EN</button>
+                    <button class="lang-btn" data-lang="uk">UK</button>
+                </div>
+
+                <!-- Auth Links (when logged out) -->
+                <div id="auth-links">
+                    <a href="/pages/login.html" class="btn btn-ghost" data-i18n="nav.login">Log In</a>
+                    <a href="/pages/register.html" class="btn btn-primary" data-i18n="nav.register">Sign Up</a>
+                </div>
+
+                <!-- User Links (when logged in) -->
+                <div id="user-links" class="hidden">
+                    <a href="/pages/add-item.html" class="btn btn-primary" data-i18n="nav.addItem">Add Item</a>
+                    <div class="user-dropdown">
+                        <button class="btn btn-ghost user-menu-btn">
+                            <span id="user-name">User</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="/pages/profile.html" data-i18n="nav.profile">Profile</a>
+                            <a href="/pages/my-listings.html" data-i18n="nav.myListings">My Listings</a>
+                            <a href="/pages/favorites.html" data-i18n="nav.favorites">Favorites</a>
+                            <hr>
+                            <a href="#" class="logout-btn" data-i18n="nav.logout">Log Out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav">
+        <a href="/" class="mobile-nav-link" data-i18n="nav.home">Home</a>
+        <a href="/pages/map.html" class="mobile-nav-link" data-i18n="nav.map">Map</a>
+        <a href="/pages/about.html" class="mobile-nav-link" data-i18n="nav.about">About</a>
+        <a href="/pages/contact.html" class="mobile-nav-link" data-i18n="nav.contact">Contact</a>
+        <hr>
+        <div id="mobile-auth-links">
+            <a href="/pages/login.html" class="mobile-nav-link" data-i18n="nav.login">Log In</a>
+            <a href="/pages/register.html" class="mobile-nav-link" data-i18n="nav.register">Sign Up</a>
+        </div>
+        <div id="mobile-user-links" class="hidden">
+            <a href="/pages/add-item.html" class="mobile-nav-link" data-i18n="nav.addItem">Add Item</a>
+            <a href="/pages/profile.html" class="mobile-nav-link" data-i18n="nav.profile">Profile</a>
+            <a href="/pages/my-listings.html" class="mobile-nav-link" data-i18n="nav.myListings">My Listings</a>
+            <a href="/pages/favorites.html" class="mobile-nav-link" data-i18n="nav.favorites">Favorites</a>
+            <a href="#" class="mobile-nav-link logout-btn" data-i18n="nav.logout">Log Out</a>
+        </div>
+    </div>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container">
+            <h1 data-i18n="rent.title">Rent This Item</h1>
+        </div>
+    </div>
+
+    <!-- Rent Form -->
+    <section class="section" style="padding-top: 0;">
+        <div class="container" style="max-width: 900px;">
+            <div id="rent-content" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <div class="loading-spinner" style="grid-column: 1 / -1; justify-self: center;"></div>
+            </div>
+        </div>
+    </section>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="/components/legal-modal.js"></script>
+    <script src="/components/cookie-banner.js"></script>
+    <script src="/assets/js/i18n.js"></script>
+    <script src="/assets/js/main.js"></script>
+    <script>
+        let product = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = await checkAuth();
+            if (!user) {
+                const productId = getUrlParam('id');
+                window.location.href = `/pages/login.html?return=/pages/rent.html?id=${productId}`;
+                return;
+            }
+
+            const productId = getUrlParam('id');
+            if (!productId) {
+                window.location.href = '/';
+                return;
+            }
+
+            await loadProduct(productId);
+        });
+
+        async function loadProduct(productId) {
+            try {
+                const data = await api.get(`/api/products/${productId}`);
+                product = data.product;
+
+                if (!product.available) {
+                    showToast('warning', 'This item is not available for rent');
+                    window.location.href = `/pages/item.html?id=${productId}`;
+                    return;
+                }
+
+                if (product.userId === currentUser.id) {
+                    showToast('warning', 'You cannot rent your own item');
+                    window.location.href = `/pages/item.html?id=${productId}`;
+                    return;
+                }
+
+                renderRentForm();
+
+            } catch (error) {
+                showToast('error', error.message);
+                window.location.href = '/';
+            }
+        }
+
+        function renderRentForm() {
+            const container = document.getElementById('rent-content');
+            const imageUrl = product.images && product.images.length > 0
+                ? product.images[0]
+                : '/assets/images/placeholder.png';
+
+            // Set min date to today
+            const today = new Date().toISOString().split('T')[0];
+
+            container.innerHTML = `
+                <!-- Product Summary -->
+                <div class="card" style="padding: 1.5rem;">
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+                        <img src="${imageUrl}" alt="${escapeHtml(product.title)}" style="width: 120px; height: 90px; object-fit: cover; border-radius: var(--radius-lg);">
+                        <div>
+                            <h3 style="font-size: 1.125rem; margin-bottom: 0.5rem;">${escapeHtml(product.title)}</h3>
+                            <p style="font-size: 0.875rem; color: var(--color-gray-500);">${escapeHtml(product.city)}</p>
+                            <p style="font-size: 1.25rem; font-weight: 600; color: var(--color-primary); margin-top: 0.5rem;">₴${product.price} / day</p>
+                        </div>
+                    </div>
+                    
+                    <div class="owner-card" style="margin: 0;">
+                        <div class="owner-avatar">
+                            ${product.ownerName ? product.ownerName.charAt(0).toUpperCase() : '?'}
+                        </div>
+                        <div class="owner-info">
+                            <h4 style="font-size: 0.875rem;">${escapeHtml(product.ownerName || 'Unknown')}</h4>
+                            <p style="font-size: 0.75rem;">${product.ownerPhone || 'Phone not provided'}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rent Form -->
+                <div class="card" style="padding: 1.5rem;">
+                    <form id="rent-form">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div class="form-group">
+                                <label class="form-label" data-i18n="rent.startDate">Start Date</label>
+                                <input type="date" id="start-date" class="form-input" min="${today}" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" data-i18n="rent.endDate">End Date</label>
+                                <input type="date" id="end-date" class="form-input" min="${today}" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="rent.message">Message to Owner (optional)</label>
+                            <textarea id="message" class="form-input form-textarea" data-i18n-placeholder="rent.messagePlaceholder" placeholder="Introduce yourself and explain when you need the item..." rows="4"></textarea>
+                        </div>
+
+                        <!-- Summary -->
+                        <div id="summary" style="background: var(--color-gray-50); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.5rem; display: none;">
+                            <h4 style="margin-bottom: 1rem;" data-i18n="rent.summary">Rental Summary</h4>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>₴${product.price} × <span id="days-count">0</span> ${i18n.t('rent.days')}</span>
+                                <span id="subtotal">₴0</span>
+                            </div>
+                            <hr style="margin: 1rem 0; border: none; border-top: 1px solid var(--color-gray-200);">
+                            <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 1.125rem;">
+                                <span data-i18n="rent.total">Total</span>
+                                <span id="total" style="color: var(--color-primary);">₴0</span>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 1.5rem; font-size: 0.875rem; color: var(--color-gray-600);">
+                            <span data-i18n="legal.rentalTerms" data-i18n-html="true">
+                                By confirming the rental, you accept the 
+                                <a href="#" class="legal-link" data-legal="public-offer">public offer terms</a>
+                            </span>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;" data-i18n="rent.submit">Request Rental</button>
+                    </form>
+                </div>
+            `;
+
+            // Add date change listeners
+            document.getElementById('start-date').addEventListener('change', updateSummary);
+            document.getElementById('end-date').addEventListener('change', updateSummary);
+
+            // Form submission
+            document.getElementById('rent-form').addEventListener('submit', handleSubmit);
+        }
+
+        function updateSummary() {
+            const startDate = document.getElementById('start-date').value;
+            const endDate = document.getElementById('end-date').value;
+            const summary = document.getElementById('summary');
+
+            if (!startDate || !endDate) {
+                summary.style.display = 'none';
+                return;
+            }
+
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            const days = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
+
+            if (days < 1) {
+                summary.style.display = 'none';
+                return;
+            }
+
+            const total = product.price * days;
+
+            document.getElementById('days-count').textContent = days;
+            document.getElementById('subtotal').textContent = `₴${total}`;
+            document.getElementById('total').textContent = `₴${total}`;
+            summary.style.display = 'block';
+        }
+
+        async function handleSubmit(e) {
+            e.preventDefault();
+
+            // Check legal consent
+            if (await legalModal.checkConsentRequired('public-offer')) {
+                legalModal.open({
+                    type: 'public-offer',
+                    title: i18n.t('legal.publicOffer'),
+                    showAccept: true,
+                    onAccept: () => {
+                        // Retry submission after acceptance
+                        document.getElementById('rent-form').dispatchEvent(new Event('submit'));
+                    }
+                });
+                return;
+            }
+
+            const startDate = document.getElementById('start-date').value;
+            const endDate = document.getElementById('end-date').value;
+            const message = document.getElementById('message').value.trim();
+
+            if (!startDate || !endDate) {
+                showToast('error', 'Please select rental dates');
+                return;
+            }
+
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+
+            if (end < start) {
+                showToast('error', 'End date must be after start date');
+                return;
+            }
+
+            try {
+                const submitBtn = e.target.querySelector('button[type="submit"]');
+                submitBtn.disabled = true;
+                submitBtn.textContent = i18n.t('common.loading');
+
+                await api.post('/api/rentals', {
+                    productId: product.id,
+                    startDate,
+                    endDate,
+                    message
+                });
+
+                showToast('success', i18n.t('toast.rentalRequested'));
+
+                // Show success state
+                document.getElementById('rent-content').innerHTML = `
+                    <div class="card" style="grid-column: 1 / -1; padding: 3rem; text-align: center;">
+                        <div style="width: 80px; height: 80px; background: var(--color-success); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                        <h2 style="margin-bottom: 1rem;">Rental Request Sent!</h2>
+                        <p style="color: var(--color-gray-600); margin-bottom: 2rem;">The owner will review your request and get back to you soon.</p>
+                        <a href="/" class="btn btn-primary">Continue Browsing</a>
+                    </div>
+                `;
+
+            } catch (error) {
+                showToast('error', error.message);
+                const submitBtn = e.target.querySelector('button[type="submit"]');
+                submitBtn.disabled = false;
+                submitBtn.textContent = i18n.t('rent.submit');
+            }
+        }
+    </script>
+
+    <style>
+        @media (max-width: 768px) {
+            #rent-content {
+                grid-template-columns: 1fr !important;
+            }
+        }
+    </style>
+</body>
+
+</html>

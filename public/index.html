@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Arthings - Share you love, love you share. Local community rental platform for emergency gear, electronics, and everyday essentials.">
+    <title>Arthings - Share you love, love you share</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="icon" type="image/png" href="/assets/images/logo.png">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="navbar-brand">
+                <img src="/assets/images/logo.png" alt="Arthings" class="navbar-logo">
+                <span class="navbar-title">Arthings</span>
+            </a>
+
+            <div class="navbar-nav">
+                <a href="/" class="nav-link active" data-i18n="nav.home">Home</a>
+                <a href="/pages/map.html" class="nav-link" data-i18n="nav.map">Map</a>
+                <a href="/pages/rental-requests.html" class="nav-link" data-i18n="nav.rentalRequests">Rental Requests</a>
+                <a href="/pages/about.html" class="nav-link" data-i18n="nav.about">About</a>
+                <a href="/pages/contact.html" class="nav-link" data-i18n="nav.contact">Contact</a>
+            </div>
+
+            <div class="navbar-actions">
+                <div class="lang-switcher">
+                    <button class="lang-btn active" data-lang="en">EN</button>
+                    <button class="lang-btn" data-lang="uk">UK</button>
+                </div>
+
+                <!-- Auth Links (when logged out) -->
+                <div id="auth-links">
+                    <a href="/pages/login.html" class="btn btn-ghost" data-i18n="nav.login">Log In</a>
+                    <a href="/pages/register.html" class="btn btn-primary" data-i18n="nav.register">Sign Up</a>
+                </div>
+
+                <!-- User Links (when logged in) -->
+                <div id="user-links" class="hidden">
+                    <a href="/pages/add-item.html" class="btn btn-primary" data-i18n="nav.addItem">Add Item</a>
+                    <div class="user-dropdown">
+                        <button class="btn btn-ghost user-menu-btn">
+                            <span id="user-name">User</span>
+                            <svg width="16" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="3">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="/pages/profile.html" data-i18n="nav.profile">Profile</a>
+                            <a href="/pages/my-listings.html" data-i18n="nav.myListings">My Listings</a>
+                            <a href="/pages/my-rentals.html" data-i18n="nav.myRentals">My Rentals</a>
+                            <a href="/pages/favorites.html" data-i18n="nav.favorites">Favorites</a>
+                            <a href="/pages/admin.html" class="admin-only hidden">⚙ Admin Panel</a>
+                            <hr>
+                            <a href="#" class="logout-btn" data-i18n="nav.logout">Log Out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav">
+        <a href="/" class="mobile-nav-link" data-i18n="nav.home">Home</a>
+        <a href="/pages/map.html" class="mobile-nav-link" data-i18n="nav.map">Map</a>
+        <a href="/pages/rental-requests.html" class="mobile-nav-link" data-i18n="nav.rentalRequests">Rental Requests</a>
+        <a href="/pages/about.html" class="mobile-nav-link" data-i18n="nav.about">About</a>
+        <a href="/pages/contact.html" class="mobile-nav-link" data-i18n="nav.contact">Contact</a>
+        <hr>
+        <div id="mobile-auth-links">
+            <a href="/pages/login.html" class="mobile-nav-link" data-i18n="nav.login">Log In</a>
+            <a href="/pages/register.html" class="mobile-nav-link" data-i18n="nav.register">Sign Up</a>
+        </div>
+        <div id="mobile-user-links" class="hidden">
+            <a href="/pages/add-item.html" class="mobile-nav-link" data-i18n="nav.addItem">Add Item</a>
+            <a href="/pages/profile.html" class="mobile-nav-link" data-i18n="nav.profile">Profile</a>
+            <a href="/pages/my-listings.html" class="mobile-nav-link" data-i18n="nav.myListings">My Listings</a>
+            <a href="/pages/my-rentals.html" class="mobile-nav-link" data-i18n="nav.myRentals">My Rentals</a>
+            <a href="/pages/favorites.html" class="mobile-nav-link" data-i18n="nav.favorites">Favorites</a>
+            <a href="/pages/admin.html" class="mobile-nav-link admin-only hidden">⚙ Admin Panel</a>
+            <a href="#" class="mobile-nav-link logout-btn" data-i18n="nav.logout">Log Out</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge" data-i18n="hero.badge">Local Rental Community</div>
+                <h1 data-i18n="hero.title">Share you love, love you share</h1>
+                <p data-i18n="hero.subtitle">Access what you need, when you need it. From emergency gear to everyday
+                    essentials, connect with your local community.</p>
+                <div class="hero-actions">
+                    <a href="#products" class="btn btn-primary btn-lg" data-i18n="hero.cta.browse">Browse Items</a>
+                    <a href="/pages/add-item.html" class="btn btn-outline btn-lg"
+                        style="border-color: rgba(255,255,255,0.3); color: white;" data-i18n="hero.cta.list">List Your
+                        Item</a>
+                </div>
+            </div>
+            <div class="hero-decoration"></div>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="container" style="margin-top: -60px; position: relative; z-index: 10;">
+        <div class="search-section">
+            <div class="search-bar">
+                <div class="search-input-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" id="search-input" class="form-input search-input"
+                        data-i18n-placeholder="search.placeholder" placeholder="Search for items...">
+                </div>
+                <button id="filters-toggle" class="filters-toggle">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="4" y1="21" x2="4" y2="14"></line>
+                        <line x1="4" y1="10" x2="4" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12" y2="3"></line>
+                        <line x1="20" y1="21" x2="20" y2="16"></line>
+                        <line x1="20" y1="12" x2="20" y2="3"></line>
+                        <line x1="1" y1="14" x2="7" y2="14"></line>
+                        <line x1="9" y1="8" x2="15" y2="8"></line>
+                        <line x1="17" y1="16" x2="23" y2="16"></line>
+                    </svg>
+                    <span data-i18n="filters.toggle">Filters</span>
+                </button>
+                <button id="search-btn" class="btn btn-primary" data-i18n="search.button">Search</button>
+            </div>
+
+            <!-- Filters Panel -->
+            <div id="filters-panel" class="filters-panel">
+                <div class="filters-grid">
+                    <div class="filter-group">
+                        <label class="filter-label" data-i18n="filters.category">Category</label>
+                        <select id="filter-category" class="form-input form-select">
+                            <option value="" data-i18n="filters.all">All Categories</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label" data-i18n="filters.city">City</label>
+                        <select id="filter-city" class="form-input form-select">
+                            <option value="" data-i18n="filters.allCities">All Cities</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label" data-i18n="filters.minPrice">Min price</label>
+                        <input type="number" id="filter-min-price" class="form-input" min="0" placeholder="0">
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label" data-i18n="filters.maxPrice">Max price</label>
+                        <input type="number" id="filter-max-price" class="form-input" min="0" placeholder="2000">
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label" data-i18n="filters.sort">Sort by</label>
+                        <select id="filter-sort" class="form-input form-select">
+                            <option value="newest" data-i18n="filters.sort.newest">Newest</option>
+                            <option value="price-asc" data-i18n="filters.sort.priceLow">Price: Low to High</option>
+                            <option value="price-desc" data-i18n="filters.sort.priceHigh">Price: High to Low</option>
+                            <option value="popular" data-i18n="filters.sort.popular">Most Popular</option>
+                        </select>
+                    </div>
+                    <div class="filter-group" style="display: flex; align-items: flex-end;">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="filter-available">
+                            <span data-i18n="filters.available">Available only</span>
+                        </label>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem; justify-content: flex-end;">
+                    <button id="clear-filters" class="btn btn-ghost" data-i18n="filters.clear">Clear All</button>
+                    <button id="apply-filters" class="btn btn-primary" data-i18n="filters.apply">Apply Filters</button>
+                </div>
+            </div>
+
+            <!-- Category Pills -->
+            <div id="category-pills" class="category-pills"></div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-i18n="hero.cta.browse">Browse Items</h2>
+                <p id="results-count"></p>
+            </div>
+            <div id="product-grid" class="product-grid">
+                <!-- Products will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <img src="/assets/images/logo.png" alt="Arthings" width="40" height="40">
+                        <span>Arthings</span>
+                    </div>
+                    <p data-i18n="footer.description">Connect with your community. Rent what you need, share what you
+                        have.</p>
+                </div>
+                <div class="footer-column">
+                    <h4 data-i18n="footer.platform">Platform</h4>
+                    <div class="footer-links">
+                        <a href="/" data-i18n="nav.home">Home</a>
+                        <a href="/pages/map.html" data-i18n="nav.map">Map</a>
+                        <a href="/pages/about.html" data-i18n="nav.about">About</a>
+                        <a href="/pages/contact.html" data-i18n="nav.contact">Contact</a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4 data-i18n="footer.support">Support</h4>
+                    <div class="footer-links">
+                        <a href="#" data-i18n="footer.helpCenter">Help Center</a>
+                        <a href="#" data-i18n="footer.faq">FAQ</a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4 data-i18n="footer.legal">Legal</h4>
+                    <div class="footer-links">
+                        <a href="#" class="legal-link" data-legal="public-offer" data-i18n="legal.publicOffer">Public
+                            Offer</a>
+                        <a href="#" class="legal-link" data-legal="privacy-policy"
+                            data-i18n="legal.privacyPolicy">Privacy Policy</a>
+                        <a href="#" class="legal-link" data-legal="terms-of-performance"
+                            data-i18n="legal.termsOfPerformance">Terms of Use</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p data-i18n="footer.copyright">© 2025 Arthings. All rights reserved.</p>
+                <div class="footer-social">
+                    <a href="#" aria-label="Facebook">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                        </svg>
+                    </a>
+                    <a href="#" aria-label="Twitter">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" />
+                        </svg>
+                    </a>
+                    <a href="#" aria-label="Instagram">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="/components/legal-modal.js"></script>
+    <script src="/components/cookie-banner.js"></script>
+    <script src="/assets/js/i18n.js"></script>
+    <script src="/assets/js/main.js"></script>
+    <script>
+        // Page-specific JavaScript
+        let products = [];
+        let categories = [];
+        let cities = [];
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadConfig();
+            await loadProducts();
+            setupEventListeners();
+        });
+
+        async function loadConfig() {
+            try {
+                const data = await api.get('/api/config');
+                categories = data.categories || [];
+                cities = data.cities || [];
+
+                renderCategoryPills();
+                populateFilters();
+            } catch (error) {
+                console.error('Failed to load config:', error);
+            }
+        }
+
+        async function loadProducts(params = {}) {
+            const productGrid = document.getElementById('product-grid');
+            showLoading(productGrid);
+
+            try {
+                const queryParams = new URLSearchParams();
+                if (params.search) queryParams.set('search', params.search);
+                if (params.category) queryParams.set('category', params.category);
+                if (params.city) queryParams.set('city', params.city);
+                if (params.minPrice) queryParams.set('minPrice', params.minPrice);
+                if (params.maxPrice) queryParams.set('maxPrice', params.maxPrice);
+                if (params.sort) queryParams.set('sort', params.sort);
+                if (params.available) queryParams.set('available', 'true');
+
+                const queryString = queryParams.toString();
+                const data = await api.get(`/api/products${queryString ? '?' + queryString : ''}`);
+                products = data.products || [];
+
+                // Check favorites status for each product
+                if (currentUser) {
+                    try {
+                        const favData = await api.get('/api/favorites');
+                        const favoriteIds = new Set(favData.favorites.map(f => f.id));
+                        products = products.map(p => ({
+                            ...p,
+                            isFavorite: favoriteIds.has(p.id)
+                        }));
+                    } catch (e) {
+                        // Ignore favorites error
+                    }
+                }
+
+                renderProducts();
+            } catch (error) {
+                productGrid.innerHTML = `
+                    <div class="empty-state">
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function renderProducts() {
+            const productGrid = document.getElementById('product-grid');
+            const resultsCount = document.getElementById('results-count');
+
+            if (products.length === 0) {
+                showEmptyState(productGrid, i18n.t('common.noResults'));
+                resultsCount.textContent = '';
+                return;
+            }
+
+            const key = products.length === 1 ? 'search.foundSingle' : 'search.found';
+            let text = i18n.t(key).replace('{count}', products.length);
+            // Index page doesn't track selectedCity in this scope easily unless we parse filters, but renderProducts uses global state?
+            // Actually renderProducts in index.html doesn't use selectedCity variable in its scope? 
+            // Wait, index.html script lines 281-490.
+            // applyFilters reads DOM. renderProducts reads `products` array. 
+            // `loadProducts` accepts params.
+            // There is no global `selectedCity` variable in index.html! (unlike map.html)
+            // It reads from `#filter-city`.
+            const selectedCity = document.getElementById('filter-city').value;
+            if (selectedCity) {
+                text += i18n.t('search.inCity').replace('{city}', selectedCity);
+            }
+            resultsCount.textContent = text;
+            productGrid.innerHTML = '';
+
+            products.forEach(product => {
+                const card = createProductCard(product);
+                productGrid.appendChild(card);
+            });
+        }
+
+        function renderCategoryPills() {
+            const container = document.getElementById('category-pills');
+            container.innerHTML = `
+                <button class="category-pill active" data-category="">
+                    <span class="category-pill-icon">🏠</span>
+                    <span data-i18n="filters.allShort">${i18n.t('filters.allShort')}</span>
+                </button>
+            `;
+
+            categories.forEach(cat => {
+                const pill = document.createElement('button');
+                pill.className = 'category-pill';
+                pill.dataset.category = cat.id;
+                pill.innerHTML = `
+                    <span class="category-pill-icon">${cat.icon}</span>
+                    <span>${i18n.getLanguage() === 'uk' ? cat.nameUk : cat.name}</span>
+                `;
+                container.appendChild(pill);
+            });
+
+            // Add click handlers
+            container.querySelectorAll('.category-pill').forEach(pill => {
+                pill.addEventListener('click', () => {
+                    container.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
+                    pill.classList.add('active');
+
+                    document.getElementById('filter-category').value = pill.dataset.category;
+                    applyFilters();
+                });
+            });
+        }
+
+        function populateFilters() {
+            const categorySelect = document.getElementById('filter-category');
+            const citySelect = document.getElementById('filter-city');
+
+            // Populate categories
+            categories.forEach(cat => {
+                const option = document.createElement('option');
+                option.value = cat.id;
+                option.textContent = i18n.getLanguage() === 'uk' ? cat.nameUk : cat.name;
+                categorySelect.appendChild(option);
+            });
+
+            // Populate cities
+            cities.forEach(city => {
+                const option = document.createElement('option');
+                option.value = city;
+                option.textContent = city;
+                citySelect.appendChild(option);
+            });
+        }
+
+        function setupEventListeners() {
+            // Search
+            const searchInput = document.getElementById('search-input');
+            const searchBtn = document.getElementById('search-btn');
+
+            searchBtn.addEventListener('click', applyFilters);
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') applyFilters();
+            });
+
+            // Debounced search
+            searchInput.addEventListener('input', debounce(() => {
+                if (searchInput.value.length >= 3 || searchInput.value.length === 0) {
+                    applyFilters();
+                }
+            }, 500));
+
+            // Filters toggle
+            document.getElementById('filters-toggle').addEventListener('click', () => {
+                document.getElementById('filters-panel').classList.toggle('active');
+            });
+
+            // Apply filters
+            document.getElementById('apply-filters').addEventListener('click', applyFilters);
+
+            // Clear filters
+            document.getElementById('clear-filters').addEventListener('click', () => {
+                document.getElementById('search-input').value = '';
+                document.getElementById('filter-category').value = '';
+                document.getElementById('filter-city').value = '';
+                document.getElementById('filter-min-price').value = '';
+                document.getElementById('filter-max-price').value = '';
+                document.getElementById('filter-sort').value = 'newest';
+                document.getElementById('filter-available').checked = false;
+
+                // Reset category pills
+                document.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
+                document.querySelector('.category-pill[data-category=""]').classList.add('active');
+
+                loadProducts();
+            });
+
+            // User dropdown
+            const userMenuBtn = document.querySelector('.user-menu-btn');
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+
+            if (userMenuBtn && dropdownMenu) {
+                userMenuBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    dropdownMenu.classList.toggle('active');
+                });
+
+                document.addEventListener('click', () => {
+                    dropdownMenu.classList.remove('active');
+                });
+            }
+        }
+
+        function applyFilters() {
+            const params = {
+                search: document.getElementById('search-input').value,
+                category: document.getElementById('filter-category').value,
+                city: document.getElementById('filter-city').value,
+                minPrice: document.getElementById('filter-min-price').value,
+                maxPrice: document.getElementById('filter-max-price').value,
+                sort: document.getElementById('filter-sort').value,
+                available: document.getElementById('filter-available').checked
+            };
+
+            loadProducts(params);
+        }
+    </script>
+
+
+    <style>
+        /* Page-specific styles */
+        .user-dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 0.5rem;
+            min-width: 200px;
+            background: white;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            padding: 0.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all var(--transition-fast);
+            z-index: 100;
+        }
+
+        .dropdown-menu.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--color-gray-700);
+            border-radius: var(--radius-md);
+            transition: background var(--transition-fast);
+        }
+
+        .dropdown-menu a:hover {
+            background: var(--color-gray-100);
+        }
+
+        .dropdown-menu hr {
+            margin: 0.5rem 0;
+            border: none;
+            border-top: 1px solid var(--color-gray-200);
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            font-size: var(--font-size-sm);
+            color: var(--color-gray-700);
+        }
+
+        .checkbox-label input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--color-primary);
+        }
+    </style>
+</body>
+
+</html>

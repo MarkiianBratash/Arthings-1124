@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Log in to your Arthings account">
+    <title>Log In - Arthings</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="icon" type="image/png" href="/assets/images/logo.png">
+</head>
+
+<body>
+    <div class="auth-page">
+        <div class="auth-card">
+            <div class="auth-header">
+                <a href="/" class="logo">
+                    <img src="/assets/images/logo.png" alt="Arthings" width="56" height="56">
+                </a>
+                <h1 data-i18n="auth.login.title">Welcome Back</h1>
+                <p data-i18n="auth.login.subtitle">Sign in to your account</p>
+            </div>
+
+            <form id="login-form" class="auth-form">
+                <div class="form-group">
+                    <label class="form-label" data-i18n="auth.login.email">Email</label>
+                    <input type="email" id="email" class="form-input" placeholder="you@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" data-i18n="auth.login.password">Password</label>
+                    <input type="password" id="password" class="form-input" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;"
+                    data-i18n="auth.login.submit">Sign In</button>
+            </form>
+
+            <div class="auth-footer">
+                <span data-i18n="auth.login.noAccount">Don't have an account?</span>
+                <a href="/pages/register.html" data-i18n="auth.login.register">Sign up</a>
+            </div>
+
+            <div style="margin-top: 1.5rem; text-align: center;">
+                <div class="lang-switcher" style="display: inline-flex;">
+                    <button class="lang-btn active" data-lang="en">EN</button>
+                    <button class="lang-btn" data-lang="uk">UK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="/components/legal-modal.js"></script>
+    <script src="/components/cookie-banner.js"></script>
+    <script src="/assets/js/i18n.js"></script>
+    <script src="/assets/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if already logged in
+            checkAuth().then(user => {
+                if (user) {
+                    window.location.href = '/';
+                }
+            });
+
+            // Form submission
+            document.getElementById('login-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value;
+
+                // Validation
+                if (!validateEmail(email)) {
+                    showFormError(document.getElementById('email'), 'Please enter a valid email');
+                    return;
+                }
+
+                if (!password) {
+                    showFormError(document.getElementById('password'), 'Password is required');
+                    return;
+                }
+
+                try {
+                    const submitBtn = e.target.querySelector('button[type="submit"]');
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = i18n.t('common.loading');
+
+                    const data = await api.post('/api/auth/login', { email, password });
+
+                    showToast('success', i18n.t('toast.loginSuccess'));
+
+                    // Redirect after short delay
+                    setTimeout(() => {
+                        const returnUrl = getUrlParam('return') || '/';
+                        window.location.href = returnUrl;
+                    }, 500);
+
+                } catch (error) {
+                    showToast('error', error.message);
+                    const submitBtn = e.target.querySelector('button[type="submit"]');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = i18n.t('auth.login.submit');
+                }
+            });
+
+            // Clear errors on input
+            document.querySelectorAll('.form-input').forEach(input => {
+                input.addEventListener('input', () => clearFormError(input));
+            });
+        });
+    </script>
+</body>
+
+</html>

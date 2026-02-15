@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel — Arthings</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/pages/admin.css">
+    <link rel="icon" type="image/png" href="/assets/images/logo.png">
+</head>
+
+<body>
+    <!-- Sidebar overlay (mobile) -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar" id="admin-sidebar">
+            <div class="sidebar-header">
+                <img src="/assets/images/logo.png" alt="Arthings">
+                <div>
+                    <h2>Arthings</h2>
+                    <span>Admin Panel</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a class="sidebar-link active" data-tab="dashboard">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                    </svg>
+                    Dashboard
+                </a>
+                <a class="sidebar-link" data-tab="users">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                    Users
+                </a>
+                <a class="sidebar-link" data-tab="listings">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                    </svg>
+                    Listings
+                </a>
+                <a class="sidebar-link" data-tab="rentals">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                    </svg>
+                    Rentals
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="/">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 18l-6-6 6-6" />
+                    </svg>
+                    Back to Site
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="admin-main">
+            <header class="admin-topbar">
+                <div style="display:flex;align-items:center;gap:0.75rem">
+                    <button class="mobile-sidebar-toggle" id="toggle-sidebar">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="3" y1="12" x2="21" y2="12" />
+                            <line x1="3" y1="6" x2="21" y2="6" />
+                            <line x1="3" y1="18" x2="21" y2="18" />
+                        </svg>
+                    </button>
+                    <h1 id="page-title">Dashboard</h1>
+                </div>
+                <span id="admin-greeting" style="font-size:0.9rem;color:#6b7280"></span>
+            </header>
+
+            <div class="admin-content">
+                <!-- ══════════════════════════════ -->
+                <!--         DASHBOARD TAB          -->
+                <!-- ══════════════════════════════ -->
+                <div class="admin-tab active" id="tab-dashboard">
+                    <div class="stats-grid" id="stats-grid">
+                        <!-- filled by JS -->
+                    </div>
+                    <div class="recent-list" id="recent-list">
+                        <h3>Recent Rentals</h3>
+                        <div id="recent-rentals"></div>
+                    </div>
+                </div>
+
+                <!-- ══════════════════════════════ -->
+                <!--           USERS TAB            -->
+                <!-- ══════════════════════════════ -->
+                <div class="admin-tab" id="tab-users">
+                    <div class="admin-table-wrap">
+                        <div class="table-toolbar">
+                            <h3>All Users</h3>
+                            <div class="table-search">
+                                <input type="text" id="user-search" placeholder="Search users…">
+                            </div>
+                        </div>
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>City</th>
+                                    <th>Role</th>
+                                    <th>Listings</th>
+                                    <th>Joined</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-tbody"></tbody>
+                        </table>
+                        <div class="pagination" id="users-pagination"></div>
+                    </div>
+                </div>
+
+                <!-- ══════════════════════════════ -->
+                <!--         LISTINGS TAB           -->
+                <!-- ══════════════════════════════ -->
+                <div class="admin-tab" id="tab-listings">
+                    <div class="admin-table-wrap">
+                        <div class="table-toolbar">
+                            <h3>All Listings</h3>
+                            <div class="table-search">
+                                <input type="text" id="listing-search" placeholder="Search listings…">
+                            </div>
+                        </div>
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Title</th>
+                                    <th>Owner</th>
+                                    <th>Category</th>
+                                    <th>Price</th>
+                                    <th>Status</th>
+                                    <th>Views</th>
+                                    <th>Created</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="listings-tbody"></tbody>
+                        </table>
+                        <div class="pagination" id="listings-pagination"></div>
+                    </div>
+                </div>
+
+                <!-- ══════════════════════════════ -->
+                <!--         RENTALS TAB            -->
+                <!-- ══════════════════════════════ -->
+                <div class="admin-tab" id="tab-rentals">
+                    <div class="admin-table-wrap">
+                        <div class="table-toolbar">
+                            <h3>All Rentals</h3>
+                            <div class="table-search">
+                                <select id="rental-status-filter">
+                                    <option value="">All Statuses</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="approved">Approved</option>
+                                    <option value="declined">Declined</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="cancelled">Cancelled</option>
+                                </select>
+                            </div>
+                        </div>
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Item</th>
+                                    <th>Renter</th>
+                                    <th>Owner</th>
+                                    <th>Dates</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rentals-tbody"></tbody>
+                        </table>
+                        <div class="pagination" id="rentals-pagination"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="/assets/js/i18n.js"></script>
+    <script src="/assets/js/main.js"></script>
+    <script>
+        /* =======================================
+           Arthings Admin Panel — Client Script
+           ======================================= */
+        (function () {
+            // ── Guard: redirect non-admins ──
+            async function init() {
+                const user = await checkAuth();
+                if (!user) {
+                    window.location.href = '/pages/login.html';
+                    return;
+                }
+                try {
+                    await api.get('/api/admin/check');
+                } catch {
+                    window.location.href = '/';
+                    return;
+                }
+                document.getElementById('admin-greeting').textContent = `Welcome, ${user.name}`;
+                loadDashboard();
+            }
+
+            // ── Tab navigation ──
+            const tabLinks = document.querySelectorAll('.sidebar-link[data-tab]');
+            const pageTitle = document.getElementById('page-title');
+
+            tabLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    tabLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+                    document.getElementById('tab-' + link.dataset.tab).classList.add('active');
+                    pageTitle.textContent = link.textContent.trim();
+                    closeSidebar();
+
+                    switch (link.dataset.tab) {
+                        case 'dashboard': loadDashboard(); break;
+                        case 'users': loadUsers(); break;
+                        case 'listings': loadListings(); break;
+                        case 'rentals': loadRentals(); break;
+                    }
+                });
+            });
+
+            // ── Mobile sidebar ──
+            const sidebar = document.getElementById('admin-sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            document.getElementById('toggle-sidebar').addEventListener('click', () => {
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('active');
+            });
+            overlay.addEventListener('click', closeSidebar);
+            function closeSidebar() {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+            }
+
+            // ── Dashboard ──
+            async function loadDashboard() {
+                try {
+                    const data = await api.get('/api/admin/stats');
+                    const s = data.stats;
+                    document.getElementById('stats-grid').innerHTML = `
+                    <div class="stat-card"><div class="stat-icon users">👥</div><div class="stat-info"><h3>Total Users</h3><div class="stat-value">${s.totalUsers}</div></div></div>
+                    <div class="stat-card"><div class="stat-icon listings">📦</div><div class="stat-info"><h3>Listings</h3><div class="stat-value">${s.totalListings}</div></div></div>
+                    <div class="stat-card"><div class="stat-icon rentals">📋</div><div class="stat-info"><h3>Active Rentals</h3><div class="stat-value">${s.activeRentals}</div></div></div>
+                    <div class="stat-card"><div class="stat-icon revenue">💰</div><div class="stat-info"><h3>Revenue</h3><div class="stat-value">₴${s.totalRevenue.toLocaleString()}</div></div></div>
+                `;
+                    const rrContainer = document.getElementById('recent-rentals');
+                    if (data.recentRentals.length === 0) {
+                        rrContainer.innerHTML = '<p class="no-data">No rentals yet.</p>';
+                    } else {
+                        rrContainer.innerHTML = data.recentRentals.map(r => `
+                        <div class="recent-item">
+                            <div><strong>${esc(r.itemTitle)}</strong> ← ${esc(r.renterName)}</div>
+                            <div><span class="badge badge-${r.status}">${r.status}</span> <span class="meta">₴${r.totalPrice}</span></div>
+                        </div>
+                    `).join('');
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+
+            // ── Users ──
+            let usersPage = 1;
+            const userSearch = document.getElementById('user-search');
+            userSearch.addEventListener('input', debounce(() => { usersPage = 1; loadUsers(); }, 400));
+
+            async function loadUsers() {
+                try {
+                    const q = userSearch.value;
+                    const data = await api.get(`/api/admin/users?page=${usersPage}&search=${encodeURIComponent(q)}`);
+                    const tbody = document.getElementById('users-tbody');
+                    if (data.users.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="8" class="no-data">No users found.</td></tr>';
+                    } else {
+                        tbody.innerHTML = data.users.map(u => `
+                        <tr>
+                            <td>${u.id}</td>
+                            <td>${esc(u.name)}</td>
+                            <td>${esc(u.email)}</td>
+                            <td>${esc(u.city || '—')}</td>
+                            <td><span class="badge ${u.isAdmin ? 'badge-admin' : 'badge-user'}">${u.isAdmin ? 'Admin' : 'User'}</span></td>
+                            <td>${u.listingsCount}</td>
+                            <td>${shortDate(u.createdAt)}</td>
+                            <td>
+                                <button class="btn-xs primary" onclick="toggleAdmin(${u.id})">${u.isAdmin ? 'Demote' : 'Promote'}</button>
+                                <button class="btn-xs danger" onclick="deleteUser(${u.id})">Delete</button>
+                            </td>
+                        </tr>
+                    `).join('');
+                    }
+                    renderPagination('users-pagination', data.page, data.totalPages, p => { usersPage = p; loadUsers(); });
+                } catch (e) { console.error(e); }
+            }
+
+            window.toggleAdmin = async function (id) {
+                if (!confirm('Toggle admin status for this user?')) return;
+                try {
+                    const res = await api.put(`/api/admin/users/${id}/toggle-admin`);
+                    showToast('success', res.message);
+                    loadUsers();
+                } catch (e) { showToast('error', e.message); }
+            };
+
+            window.deleteUser = async function (id) {
+                if (!confirm('Permanently delete this user and all their data?')) return;
+                try {
+                    await api.delete(`/api/admin/users/${id}`);
+                    showToast('success', 'User deleted');
+                    loadUsers();
+                } catch (e) { showToast('error', e.message); }
+            };
+
+            // ── Listings ──
+            let listingsPage = 1;
+            const listingSearch = document.getElementById('listing-search');
+            listingSearch.addEventListener('input', debounce(() => { listingsPage = 1; loadListings(); }, 400));
+
+            async function loadListings() {
+                try {
+                    const q = listingSearch.value;
+                    const data = await api.get(`/api/admin/listings?page=${listingsPage}&search=${encodeURIComponent(q)}`);
+                    const tbody = document.getElementById('listings-tbody');
+                    if (data.listings.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="9" class="no-data">No listings found.</td></tr>';
+                    } else {
+                        tbody.innerHTML = data.listings.map(l => `
+                        <tr>
+                            <td>${l.id}</td>
+                            <td>${esc(l.title)}</td>
+                            <td>${esc(l.ownerName)}</td>
+                            <td>${esc(l.category)}</td>
+                            <td>₴${l.price}/${l.priceUnit}</td>
+                            <td><span class="badge ${l.isAvailable ? 'badge-available' : 'badge-unavailable'}">${l.isAvailable ? 'Available' : 'Unavailable'}</span></td>
+                            <td>${l.views}</td>
+                            <td>${shortDate(l.createdAt)}</td>
+                            <td><button class="btn-xs danger" onclick="deleteListing(${l.id})">Delete</button></td>
+                        </tr>
+                    `).join('');
+                    }
+                    renderPagination('listings-pagination', data.page, data.totalPages, p => { listingsPage = p; loadListings(); });
+                } catch (e) { console.error(e); }
+            }
+
+            window.deleteListing = async function (id) {
+                if (!confirm('Delete this listing permanently?')) return;
+                try {
+                    await api.delete(`/api/admin/listings/${id}`);
+                    showToast('success', 'Listing deleted');
+                    loadListings();
+                } catch (e) { showToast('error', e.message); }
+            };
+
+            // ── Rentals ──
+            let rentalsPage = 1;
+            const rentalFilter = document.getElementById('rental-status-filter');
+            rentalFilter.addEventListener('change', () => { rentalsPage = 1; loadRentals(); });
+
+            async function loadRentals() {
+                try {
+                    const status = rentalFilter.value;
+                    const data = await api.get(`/api/admin/rentals?page=${rentalsPage}${status ? '&status=' + status : ''}`);
+                    const tbody = document.getElementById('rentals-tbody');
+                    if (data.rentals.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="8" class="no-data">No rentals found.</td></tr>';
+                    } else {
+                        tbody.innerHTML = data.rentals.map(r => `
+                        <tr>
+                            <td>${r.id}</td>
+                            <td>${esc(r.itemTitle)}</td>
+                            <td>${esc(r.renterName)}</td>
+                            <td>${esc(r.ownerName)}</td>
+                            <td>${r.startDate} → ${r.endDate}</td>
+                            <td>₴${r.totalPrice}</td>
+                            <td><span class="badge badge-${r.status}">${r.status}</span></td>
+                            <td>
+                                <select class="status-select" onchange="changeRentalStatus(${r.id}, this.value)" data-current="${r.status}">
+                                    ${['pending', 'approved', 'declined', 'completed', 'cancelled'].map(s =>
+                            `<option value="${s}" ${s === r.status ? 'selected' : ''}>${s}</option>`
+                        ).join('')}
+                                </select>
+                            </td>
+                        </tr>
+                    `).join('');
+                    }
+                    renderPagination('rentals-pagination', data.page, data.totalPages, p => { rentalsPage = p; loadRentals(); });
+                } catch (e) { console.error(e); }
+            }
+
+            window.changeRentalStatus = async function (id, status) {
+                try {
+                    await api.put(`/api/admin/rentals/${id}/status`, { status });
+                    showToast('success', 'Status updated');
+                    loadRentals();
+                } catch (e) { showToast('error', e.message); }
+            };
+
+            // ── Helpers ──
+            function esc(str) {
+                if (!str) return '';
+                const d = document.createElement('div');
+                d.textContent = str;
+                return d.innerHTML;
+            }
+
+            function shortDate(iso) {
+                return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            }
+
+            function debounce(fn, ms) {
+                let t;
+                return function (...a) { clearTimeout(t); t = setTimeout(() => fn(...a), ms); };
+            }
+
+            function renderPagination(containerId, current, total, onPage) {
+                const c = document.getElementById(containerId);
+                if (total <= 1) { c.innerHTML = ''; return; }
+                let html = `<button ${current <= 1 ? 'disabled' : ''} onclick="void 0">← Prev</button>`;
+                html += `<span>Page ${current} of ${total}</span>`;
+                html += `<button ${current >= total ? 'disabled' : ''} onclick="void 0">Next →</button>`;
+                c.innerHTML = html;
+                const btns = c.querySelectorAll('button');
+                btns[0].addEventListener('click', () => { if (current > 1) onPage(current - 1); });
+                btns[1].addEventListener('click', () => { if (current < total) onPage(current + 1); });
+            }
+
+            // ── Start ──
+            init();
+        })();
+    </script>
+</body>
+
+</html>

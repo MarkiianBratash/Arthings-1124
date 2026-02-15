@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="See what people want to rent - Arthings">
+    <title data-i18n="rentalRequests.pageTitle">Rental Requests - Arthings</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="icon" type="image/png" href="/assets/images/logo.png">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="navbar-brand">
+                <img src="/assets/images/logo.png" alt="Arthings" class="navbar-logo">
+                <span class="navbar-title">Arthings</span>
+            </a>
+            <div class="navbar-nav">
+                <a href="/" class="nav-link" data-i18n="nav.home">Home</a>
+                <a href="/pages/map.html" class="nav-link" data-i18n="nav.map">Map</a>
+                <a href="/pages/rental-requests.html" class="nav-link active" data-i18n="nav.rentalRequests">Rental Requests</a>
+                <a href="/pages/about.html" class="nav-link" data-i18n="nav.about">About</a>
+                <a href="/pages/contact.html" class="nav-link" data-i18n="nav.contact">Contact</a>
+            </div>
+            <div class="navbar-actions">
+                <div class="lang-switcher">
+                    <button class="lang-btn active" data-lang="en">EN</button>
+                    <button class="lang-btn" data-lang="uk">UK</button>
+                </div>
+                <div id="auth-links">
+                    <a href="/pages/login.html" class="btn btn-ghost" data-i18n="nav.login">Log In</a>
+                    <a href="/pages/register.html" class="btn btn-primary" data-i18n="nav.register">Sign Up</a>
+                </div>
+                <div id="user-links" class="hidden">
+                    <a href="/pages/add-item.html" class="btn btn-primary" data-i18n="nav.addItem">Add Item</a>
+                    <div class="user-dropdown">
+                        <button class="btn btn-ghost user-menu-btn">
+                            <span id="user-name">User</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="/pages/profile.html" data-i18n="nav.profile">Profile</a>
+                            <a href="/pages/my-listings.html" data-i18n="nav.myListings">My Listings</a>
+                            <a href="/pages/my-rentals.html" data-i18n="nav.myRentals">My Rentals</a>
+                            <a href="/pages/favorites.html" data-i18n="nav.favorites">Favorites</a>
+                            <a href="/pages/admin.html" class="admin-only hidden">⚙ Admin</a>
+                            <hr>
+                            <a href="#" class="logout-btn" data-i18n="nav.logout">Log Out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="mobile-menu-btn" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+    <div class="mobile-nav">
+        <a href="/" class="mobile-nav-link" data-i18n="nav.home">Home</a>
+        <a href="/pages/map.html" class="mobile-nav-link" data-i18n="nav.map">Map</a>
+        <a href="/pages/rental-requests.html" class="mobile-nav-link active" data-i18n="nav.rentalRequests">Rental Requests</a>
+        <a href="/pages/about.html" class="mobile-nav-link" data-i18n="nav.about">About</a>
+        <a href="/pages/contact.html" class="mobile-nav-link" data-i18n="nav.contact">Contact</a>
+        <hr>
+        <div id="mobile-auth-links">
+            <a href="/pages/login.html" class="mobile-nav-link" data-i18n="nav.login">Log In</a>
+            <a href="/pages/register.html" class="mobile-nav-link" data-i18n="nav.register">Sign Up</a>
+        </div>
+        <div id="mobile-user-links" class="hidden">
+            <a href="/pages/add-item.html" class="mobile-nav-link" data-i18n="nav.addItem">Add Item</a>
+            <a href="/pages/profile.html" class="mobile-nav-link" data-i18n="nav.profile">Profile</a>
+            <a href="/pages/my-listings.html" class="mobile-nav-link" data-i18n="nav.myListings">My Listings</a>
+            <a href="/pages/my-rentals.html" class="mobile-nav-link" data-i18n="nav.myRentals">My Rentals</a>
+            <a href="/pages/favorites.html" class="mobile-nav-link" data-i18n="nav.favorites">Favorites</a>
+            <a href="#" class="mobile-nav-link logout-btn" data-i18n="nav.logout">Log Out</a>
+        </div>
+    </div>
+
+    <div class="page-header">
+        <div class="container">
+            <h1 data-i18n="rentalRequests.title">What people want to rent</h1>
+            <p class="page-subtitle" data-i18n="rentalRequests.subtitle">Browse requests from people looking to rent. Have something that matches? List it and get in touch.</p>
+        </div>
+    </div>
+
+    <section class="section" style="padding-top: 0;">
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+                <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                    <select id="filter-category" class="form-input form-select" style="width: auto; min-width: 160px;">
+                        <option value="" data-i18n="filters.all">All Categories</option>
+                    </select>
+                    <select id="filter-city" class="form-input form-select" style="width: auto; min-width: 140px;">
+                        <option value="" data-i18n="filters.allCities">All Cities</option>
+                    </select>
+                    <button type="button" class="btn btn-ghost" id="btn-apply-filters" data-i18n="filters.apply">Apply</button>
+                </div>
+                <button type="button" class="btn btn-primary" id="btn-new-request" data-i18n="rentalRequests.newRequest">+ New request</button>
+            </div>
+
+            <div id="requests-list" class="product-grid" style="grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));">
+                <div class="loading-spinner" style="grid-column: 1 / -1; justify-self: center;"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- New request modal -->
+    <div id="request-modal-backdrop" class="modal-backdrop" style="display: none;">
+        <div id="request-modal" class="modal">
+            <div class="modal-header">
+                <h3 data-i18n="rentalRequests.formTitle">What do you want to rent?</h3>
+                <button type="button" class="modal-close" id="request-modal-close">&times;</button>
+            </div>
+            <form id="request-form">
+                <div class="form-group">
+                    <label class="form-label" data-i18n="rentalRequests.formTitleLabel">Title</label>
+                    <input type="text" id="request-title" class="form-input" placeholder="e.g. Drill for weekend" required maxlength="255">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" data-i18n="rentalRequests.formDescription">Description</label>
+                    <textarea id="request-description" class="form-input form-textarea" rows="4" required maxlength="5000"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" data-i18n="filters.category">Category</label>
+                    <select id="request-category" class="form-input form-select">
+                        <option value="">—</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" data-i18n="filters.city">City</label>
+                    <select id="request-city" class="form-input form-select">
+                        <option value="">—</option>
+                    </select>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <button type="button" class="btn btn-ghost" id="request-cancel">Cancel</button>
+                    <button type="submit" class="btn btn-primary" data-i18n="rentalRequests.submit">Submit request</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="/components/legal-modal.js"></script>
+    <script src="/components/cookie-banner.js"></script>
+    <script src="/assets/js/i18n.js"></script>
+    <script src="/assets/js/main.js"></script>
+    <script>
+        let config = { categories: [], cities: [] };
+        let requests = [];
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await checkAuth();
+            try {
+                config = await api.get('/api/config');
+            } catch (e) {
+                console.error(e);
+            }
+            fillSelects();
+            loadRequests();
+            document.getElementById('btn-apply-filters').addEventListener('click', loadRequests);
+            document.getElementById('btn-new-request').addEventListener('click', openRequestModal);
+            document.getElementById('request-modal-close').addEventListener('click', closeRequestModal);
+            document.getElementById('request-cancel').addEventListener('click', closeRequestModal);
+            document.getElementById('request-modal-backdrop').addEventListener('click', (e) => { if (e.target.id === 'request-modal-backdrop') closeRequestModal(); });
+            document.getElementById('request-form').addEventListener('submit', submitRequest);
+        });
+
+        function fillSelects() {
+            const catFilter = document.getElementById('filter-category');
+            const cityFilter = document.getElementById('filter-city');
+            const reqCat = document.getElementById('request-category');
+            const reqCity = document.getElementById('request-city');
+            (config.categories || []).forEach(c => {
+                catFilter.appendChild(new Option(c.nameUk || c.name, c.id));
+                const o = new Option(c.nameUk || c.name, c.id);
+                reqCat.appendChild(o);
+            });
+            (config.cities || []).forEach(city => {
+                cityFilter.appendChild(new Option(city, city));
+                reqCity.appendChild(new Option(city, city));
+            });
+        }
+
+        async function loadRequests() {
+            const category = document.getElementById('filter-category').value;
+            const city = document.getElementById('filter-city').value;
+            const params = new URLSearchParams();
+            if (category) params.set('category', category);
+            if (city) params.set('city', city);
+            const listEl = document.getElementById('requests-list');
+            listEl.innerHTML = '<div class="loading-spinner" style="grid-column: 1 / -1;"></div>';
+            try {
+                const data = await api.get('/api/rental-requests?' + params.toString());
+                requests = data.requests || [];
+                renderRequests();
+            } catch (err) {
+                listEl.innerHTML = '<p class="empty-state">' + (err.message || 'Failed to load requests') + '</p>';
+            }
+        }
+
+        function renderRequests() {
+            const listEl = document.getElementById('requests-list');
+            if (requests.length === 0) {
+                listEl.innerHTML = '<div class="empty-state" style="grid-column: 1 / -1;"><p data-i18n="rentalRequests.empty">No rental requests yet. Be the first to post what you need!</p></div>';
+                return;
+            }
+            listEl.innerHTML = requests.map(r => `
+                <div class="card" style="padding: 1.25rem;">
+                    <h3 style="margin-bottom: 0.5rem;">${escapeHtml(r.title)}</h3>
+                    <p style="color: var(--color-gray-600); font-size: 0.875rem; margin-bottom: 0.75rem;">${escapeHtml((r.description || '').slice(0, 160))}${(r.description || '').length > 160 ? '…' : ''}</p>
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.5rem;">
+                        ${r.category ? `<span class="badge">${escapeHtml(r.category)}</span>` : ''}
+                        ${r.city ? `<span class="badge">${escapeHtml(r.city)}</span>` : ''}
+                    </div>
+                    <p style="font-size: 0.8rem; color: var(--color-gray-500);">${r.user ? escapeHtml(r.user.name) : '—'}${r.user && r.user.city ? ' · ' + escapeHtml(r.user.city) : ''}</p>
+                    <p style="font-size: 0.75rem; color: var(--color-gray-400); margin-top: 0.25rem;">${new Date(r.createdAt).toLocaleDateString()}</p>
+                </div>
+            `).join('');
+        }
+
+        function escapeHtml(s) {
+            const div = document.createElement('div');
+            div.textContent = s;
+            return div.innerHTML;
+        }
+
+        function openRequestModal() {
+            if (!currentUser) {
+                window.location.href = '/pages/login.html?return=' + encodeURIComponent('/pages/rental-requests.html');
+                return;
+            }
+            document.getElementById('request-title').value = '';
+            document.getElementById('request-description').value = '';
+            document.getElementById('request-category').value = '';
+            document.getElementById('request-city').value = '';
+            document.getElementById('request-modal-backdrop').style.display = 'flex';
+        }
+
+        function closeRequestModal() {
+            document.getElementById('request-modal-backdrop').style.display = 'none';
+        }
+
+        async function submitRequest(e) {
+            e.preventDefault();
+            const title = document.getElementById('request-title').value.trim();
+            const description = document.getElementById('request-description').value.trim();
+            const category = document.getElementById('request-category').value || null;
+            const city = document.getElementById('request-city').value || null;
+            try {
+                await api.post('/api/rental-requests', { title, description, category, city });
+                showToast('success', document.querySelector('[data-i18n="rentalRequests.submitSuccess"]') ? i18n.t('rentalRequests.submitSuccess') : 'Request published!');
+                closeRequestModal();
+                loadRequests();
+            } catch (err) {
+                showToast('error', err.message || 'Failed to create request');
+            }
+        }
+    </script>
+</body>
+
+</html>

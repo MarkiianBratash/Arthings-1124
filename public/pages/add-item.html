@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="List your item for rent on Arthings">
+    <title>Add Item - Arthings</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="icon" type="image/png" href="/assets/images/logo.png">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="navbar-brand">
+                <img src="/assets/images/logo.png" alt="Arthings" class="navbar-logo">
+                <span class="navbar-title">Arthings</span>
+            </a>
+
+            <div class="navbar-nav">
+                <a href="/" class="nav-link" data-i18n="nav.home">Home</a>
+                <a href="/pages/map.html" class="nav-link" data-i18n="nav.map">Map</a>
+                <a href="/pages/about.html" class="nav-link" data-i18n="nav.about">About</a>
+                <a href="/pages/contact.html" class="nav-link" data-i18n="nav.contact">Contact</a>
+            </div>
+
+            <div class="navbar-actions">
+                <div class="lang-switcher">
+                    <button class="lang-btn active" data-lang="en">EN</button>
+                    <button class="lang-btn" data-lang="uk">UK</button>
+                </div>
+
+                <!-- Auth Links (when logged out) -->
+                <div id="auth-links">
+                    <a href="/pages/login.html" class="btn btn-ghost" data-i18n="nav.login">Log In</a>
+                    <a href="/pages/register.html" class="btn btn-primary" data-i18n="nav.register">Sign Up</a>
+                </div>
+
+                <!-- User Links (when logged in) -->
+                <div id="user-links" class="hidden">
+                    <a href="/pages/add-item.html" class="btn btn-primary" data-i18n="nav.addItem">Add Item</a>
+                    <div class="user-dropdown">
+                        <button class="btn btn-ghost user-menu-btn">
+                            <span id="user-name">User</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="/pages/profile.html" data-i18n="nav.profile">Profile</a>
+                            <a href="/pages/my-listings.html" data-i18n="nav.myListings">My Listings</a>
+                            <a href="/pages/favorites.html" data-i18n="nav.favorites">Favorites</a>
+                            <hr>
+                            <a href="#" class="logout-btn" data-i18n="nav.logout">Log Out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav">
+        <a href="/" class="mobile-nav-link" data-i18n="nav.home">Home</a>
+        <a href="/pages/map.html" class="mobile-nav-link" data-i18n="nav.map">Map</a>
+        <a href="/pages/about.html" class="mobile-nav-link" data-i18n="nav.about">About</a>
+        <a href="/pages/contact.html" class="mobile-nav-link" data-i18n="nav.contact">Contact</a>
+        <hr>
+        <div id="mobile-auth-links">
+            <a href="/pages/login.html" class="mobile-nav-link" data-i18n="nav.login">Log In</a>
+            <a href="/pages/register.html" class="mobile-nav-link" data-i18n="nav.register">Sign Up</a>
+        </div>
+        <div id="mobile-user-links" class="hidden">
+            <a href="/pages/add-item.html" class="mobile-nav-link" data-i18n="nav.addItem">Add Item</a>
+            <a href="/pages/profile.html" class="mobile-nav-link" data-i18n="nav.profile">Profile</a>
+            <a href="/pages/my-listings.html" class="mobile-nav-link" data-i18n="nav.myListings">My Listings</a>
+            <a href="/pages/favorites.html" class="mobile-nav-link" data-i18n="nav.favorites">Favorites</a>
+            <a href="#" class="mobile-nav-link logout-btn" data-i18n="nav.logout">Log Out</a>
+        </div>
+    </div>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container">
+            <h1 data-i18n="addItem.title">List Your Item</h1>
+            <p data-i18n="addItem.subtitle">Share what you have with your community</p>
+        </div>
+    </div>
+
+    <!-- Add Item Form -->
+    <section class="section" style="padding-top: 0;">
+        <div class="container" style="max-width: 700px;">
+            <div class="card" style="padding: 2.5rem;">
+                <form id="add-item-form">
+                    <div class="form-group">
+                        <label class="form-label" data-i18n="addItem.name">Item Name</label>
+                        <input type="text" id="title" class="form-input" data-i18n-placeholder="addItem.namePlaceholder"
+                            placeholder="e.g., Portable Generator" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" data-i18n="addItem.description">Description</label>
+                        <textarea id="description" class="form-input form-textarea"
+                            data-i18n-placeholder="addItem.descriptionPlaceholder"
+                            placeholder="Describe your item in detail..." required></textarea>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="addItem.category">Category</label>
+                            <select id="category" class="form-input form-select" required>
+                                <option value="" data-i18n="addItem.selectCategory">Select a category</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="addItem.price">Price per Day (₴)</label>
+                            <input type="number" id="price" class="form-input" min="1" step="1" placeholder="25"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" data-i18n="addItem.city">City</label>
+                        <select id="city" class="form-input form-select" required>
+                            <option value="" data-i18n="addItem.selectCity">Select your city</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" data-i18n="addItem.images">Photos</label>
+                        <div class="file-upload" id="file-upload-zone">
+                            <svg class="file-upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                            <p class="file-upload-text">
+                                <strong data-i18n="addItem.uploadImages">Upload Images</strong><br>
+                                <span data-i18n="addItem.dragDrop">Drag and drop or click to upload</span>
+                            </p>
+                            <input type="file" id="images" accept="image/*" multiple>
+                        </div>
+                        <div id="image-preview" class="image-preview"></div>
+                    </div>
+
+                    <div style="margin-top: 1.5rem; font-size: 0.875rem; color: var(--color-gray-600);">
+                        <span data-i18n="legal.publishTerms" data-i18n-html="true">
+                            By publishing, you agree to the
+                            <a href="#" class="legal-link" data-legal="terms-of-performance">Terms of Performance</a>
+                            and
+                            <a href="#" class="legal-link" data-legal="public-offer">Public Offer</a>
+                        </span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; margin-top: 1rem;"
+                        data-i18n="addItem.submit">List Item</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="/components/legal-modal.js"></script>
+    <script src="/components/cookie-banner.js"></script>
+    <script src="/assets/js/i18n.js"></script>
+    <script src="/assets/js/main.js"></script>
+    <script>
+        let selectedFiles = [];
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Check authentication
+            const user = await checkAuth();
+            if (!user) {
+                showToast('warning', 'Please log in to add items');
+                window.location.href = '/pages/login.html?return=/pages/add-item.html';
+                return;
+            }
+
+            // Load config
+            try {
+                const data = await api.get('/api/config');
+
+                // Populate categories
+                const categorySelect = document.getElementById('category');
+                (data.categories || []).forEach(cat => {
+                    const option = document.createElement('option');
+                    option.value = cat.id;
+                    option.textContent = `${cat.icon} ${i18n.getLanguage() === 'uk' ? cat.nameUk : cat.name}`;
+                    categorySelect.appendChild(option);
+                });
+
+                // Populate cities
+                const citySelect = document.getElementById('city');
+                (data.cities || []).forEach(city => {
+                    const option = document.createElement('option');
+                    option.value = city;
+                    option.textContent = city;
+                    citySelect.appendChild(option);
+                });
+
+                // Pre-select user's city if set
+                if (user.city) {
+                    citySelect.value = user.city;
+                }
+            } catch (error) {
+                console.error('Failed to load config:', error);
+            }
+
+            // File upload handling
+            const fileInput = document.getElementById('images');
+            const uploadZone = document.getElementById('file-upload-zone');
+
+            fileInput.addEventListener('change', handleFileSelect);
+
+            uploadZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadZone.style.borderColor = 'var(--color-primary)';
+                uploadZone.style.background = 'var(--color-primary-alpha)';
+            });
+
+            uploadZone.addEventListener('dragleave', () => {
+                uploadZone.style.borderColor = '';
+                uploadZone.style.background = '';
+            });
+
+            uploadZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadZone.style.borderColor = '';
+                uploadZone.style.background = '';
+
+                if (e.dataTransfer.files.length) {
+                    fileInput.files = e.dataTransfer.files;
+                    handleFileSelect({ target: fileInput });
+                }
+            });
+
+            // Form submission
+            document.getElementById('add-item-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                // Check legal consents
+                const needsTerms = await legalModal.checkConsentRequired('terms-of-performance');
+                const needsOffer = await legalModal.checkConsentRequired('public-offer');
+
+                if (needsTerms) {
+                    legalModal.open({
+                        type: 'terms-of-performance',
+                        title: i18n.t('legal.termsOfPerformance'),
+                        showAccept: true,
+                        onAccept: () => {
+                            // If also needs offer, show that next, otherwise submit
+                            if (needsOffer) {
+                                setTimeout(() => {
+                                    legalModal.open({
+                                        type: 'public-offer',
+                                        title: i18n.t('legal.publicOffer'),
+                                        showAccept: true,
+                                        onAccept: () => document.getElementById('add-item-form').dispatchEvent(new Event('submit'))
+                                    });
+                                }, 300);
+                            } else {
+                                document.getElementById('add-item-form').dispatchEvent(new Event('submit'));
+                            }
+                        }
+                    });
+                    return;
+                }
+
+                if (needsOffer) {
+                    legalModal.open({
+                        type: 'public-offer',
+                        title: i18n.t('legal.publicOffer'),
+                        showAccept: true,
+                        onAccept: () => document.getElementById('add-item-form').dispatchEvent(new Event('submit'))
+                    });
+                    return;
+                }
+
+                const title = document.getElementById('title').value.trim();
+                const description = document.getElementById('description').value.trim();
+                const category = document.getElementById('category').value;
+                const price = document.getElementById('price').value;
+                const city = document.getElementById('city').value;
+
+                // Validation
+                if (!title || !description || !category || !price || !city) {
+                    showToast('error', 'Please fill in all required fields');
+                    return;
+                }
+
+                try {
+                    const submitBtn = e.target.querySelector('button[type="submit"]');
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = i18n.t('common.loading');
+
+                    // Create FormData for file upload
+                    const formData = new FormData();
+                    formData.append('title', title);
+                    formData.append('description', description);
+                    formData.append('category', category);
+                    formData.append('price', price);
+                    formData.append('city', city);
+
+                    selectedFiles.forEach(file => {
+                        formData.append('images', file);
+                    });
+
+                    const data = await api.post('/api/products', formData, true);
+
+                    showToast('success', i18n.t('toast.itemCreated'));
+
+                    // Redirect to the new product
+                    setTimeout(() => {
+                        window.location.href = `/pages/item.html?id=${data.product.id}`;
+                    }, 1000);
+
+                } catch (error) {
+                    showToast('error', error.message);
+                    const submitBtn = e.target.querySelector('button[type="submit"]');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = i18n.t('addItem.submit');
+                }
+            });
+        });
+
+        function handleFileSelect(e) {
+            const files = Array.from(e.target.files);
+            selectedFiles = [...selectedFiles, ...files].slice(0, 5); // Max 5 images
+
+            renderImagePreview();
+        }
+
+        function renderImagePreview() {
+            const preview = document.getElementById('image-preview');
+            preview.innerHTML = '';
+
+            selectedFiles.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const div = document.createElement('div');
+                    div.className = 'preview-item';
+                    div.innerHTML = `
+                        <img src="${e.target.result}" alt="Preview">
+                        <button type="button" class="preview-remove" onclick="removeImage(${index})">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                    `;
+                    preview.appendChild(div);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function removeImage(index) {
+            selectedFiles.splice(index, 1);
+            renderImagePreview();
+        }
+    </script>
+
+    <style>
+        .image-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .preview-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .preview-remove {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: var(--radius-full);
+            color: white;
+            cursor: pointer;
+            transition: background var(--transition-fast);
+        }
+
+        .preview-remove:hover {
+            background: var(--color-error);
+        }
+
+        @media (max-width: 600px) {
+            .card {
+                padding: 1.5rem !important;
+            }
+
+            [style*="grid-template-columns: 1fr 1fr"] {
+                grid-template-columns: 1fr !important;
+            }
+        }
+    </style>
+</body>
+
+</html>

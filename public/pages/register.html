@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Create your Arthings account and join our community">
+    <title>Sign Up - Arthings</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="icon" type="image/png" href="/assets/images/logo.png">
+</head>
+
+<body>
+    <div class="auth-page">
+        <div class="auth-card">
+            <div class="auth-header">
+                <a href="/" class="logo">
+                    <img src="/assets/images/logo.png" alt="Arthings" width="56" height="56">
+                </a>
+                <h1 data-i18n="auth.register.title">Create Account</h1>
+                <p data-i18n="auth.register.subtitle">Join our community today</p>
+            </div>
+
+            <form id="register-form" class="auth-form">
+                <div class="form-group">
+                    <label class="form-label" data-i18n="auth.register.name">Full Name</label>
+                    <input type="text" id="name" class="form-input" placeholder="John Doe" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" data-i18n="auth.register.email">Email</label>
+                    <input type="email" id="email" class="form-input" placeholder="you@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" data-i18n="auth.register.password">Password</label>
+                    <input type="password" id="password" class="form-input" placeholder="••••••••" required
+                        minlength="6">
+                    <p class="form-hint">Minimum 6 characters</p>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" data-i18n="auth.register.phone">Phone (optional)</label>
+                    <input type="tel" id="phone" class="form-input" placeholder="+380...">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" data-i18n="auth.register.city">City</label>
+                    <select id="city" class="form-input form-select">
+                        <option value="" data-i18n="addItem.selectCity">Select your city</option>
+                    </select>
+                </div>
+
+                <div class="form-group" style="margin-top: 1rem; margin-bottom: 1.5rem;">
+                    <label class="checkbox-label"
+                        style="display: flex; gap: 0.5rem; align-items: flex-start; cursor: pointer; font-size: 0.875rem; color: var(--color-gray-700);">
+                        <input type="checkbox" id="legal-consent" required
+                            style="width: 18px; height: 18px; margin-top: 2px;">
+                        <span data-i18n="legal.agreeCheckbox" data-i18n-html="true">
+                            I agree to the
+                            <a href="#" class="legal-link" data-legal="public-offer">Public Offer</a>,
+                            <a href="#" class="legal-link" data-legal="privacy-policy">Privacy Policy</a> and
+                            <a href="#" class="legal-link" data-legal="terms-of-performance">Terms of Use</a>
+                        </span>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;"
+                    data-i18n="auth.register.submit" id="submit-btn" disabled>Create Account</button>
+            </form>
+
+            <div class="auth-footer">
+                <span data-i18n="auth.register.hasAccount">Already have an account?</span>
+                <a href="/pages/login.html" data-i18n="auth.register.login">Sign in</a>
+            </div>
+
+            <div style="margin-top: 1.5rem; text-align: center;">
+                <div class="lang-switcher" style="display: inline-flex;">
+                    <button class="lang-btn active" data-lang="en">EN</button>
+                    <button class="lang-btn" data-lang="uk">UK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="/components/legal-modal.js"></script>
+    <script src="/components/cookie-banner.js"></script>
+    <script src="/assets/js/i18n.js"></script>
+    <script src="/assets/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Check if already logged in
+            checkAuth().then(user => {
+                if (user) {
+                    window.location.href = '/';
+                }
+            });
+
+            // Load cities
+            try {
+                const data = await api.get('/api/config');
+                const citySelect = document.getElementById('city');
+                (data.cities || []).forEach(city => {
+                    const option = document.createElement('option');
+                    option.value = city;
+                    option.textContent = city;
+                    citySelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Failed to load cities:', error);
+            }
+
+            // Toggle submit button based on checkbox
+            const updatedConsentCheckbox = document.getElementById('legal-consent');
+            const submitBtn = document.getElementById('submit-btn');
+
+            updatedConsentCheckbox.addEventListener('change', () => {
+                submitBtn.disabled = !updatedConsentCheckbox.checked;
+            });
+
+            // Form submission
+            document.getElementById('register-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const name = document.getElementById('name').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value;
+                const phone = document.getElementById('phone').value.trim();
+                const city = document.getElementById('city').value;
+
+                // Validation
+                if (!name) {
+                    showFormError(document.getElementById('name'), 'Name is required');
+                    return;
+                }
+
+                if (!validateEmail(email)) {
+                    showFormError(document.getElementById('email'), 'Please enter a valid email');
+                    return;
+                }
+
+                if (!validatePassword(password)) {
+                    showFormError(document.getElementById('password'), 'Password must be at least 6 characters');
+                    return;
+                }
+
+                try {
+                    const submitBtn = e.target.querySelector('button[type="submit"]');
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = i18n.t('common.loading');
+
+                    await api.post('/api/auth/register', {
+                        name,
+                        email,
+                        password,
+                        phone,
+                        city,
+                        consents: [
+                            { type: 'public-offer', version: '1.0' },
+                            { type: 'privacy-policy', version: '1.0' },
+                            { type: 'terms-of-performance', version: '1.0' }
+                        ]
+                    });
+
+                    showToast('success', i18n.t('toast.registerSuccess'));
+
+                    // Redirect to login
+                    setTimeout(() => {
+                        window.location.href = '/pages/login.html';
+                    }, 1000);
+
+                } catch (error) {
+                    showToast('error', error.message);
+                    const submitBtn = e.target.querySelector('button[type="submit"]');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = i18n.t('auth.register.submit');
+                }
+            });
+
+            // Clear errors on input
+            document.querySelectorAll('.form-input').forEach(input => {
+                input.addEventListener('input', () => clearFormError(input));
+            });
+        });
+    </script>
+</body>
+
+</html>

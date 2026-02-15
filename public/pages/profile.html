@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Your Arthings profile">
+    <title>Profile - Arthings</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="icon" type="image/png" href="/assets/images/logo.png">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="navbar-brand">
+                <img src="/assets/images/logo.png" alt="Arthings" class="navbar-logo">
+                <span class="navbar-title">Arthings</span>
+            </a>
+
+            <div class="navbar-nav">
+                <a href="/" class="nav-link" data-i18n="nav.home">Home</a>
+                <a href="/pages/map.html" class="nav-link" data-i18n="nav.map">Map</a>
+                <a href="/pages/rental-requests.html" class="nav-link" data-i18n="nav.rentalRequests">Rental Requests</a>
+                <a href="/pages/about.html" class="nav-link" data-i18n="nav.about">About</a>
+                <a href="/pages/contact.html" class="nav-link" data-i18n="nav.contact">Contact</a>
+            </div>
+
+            <div class="navbar-actions">
+                <div class="lang-switcher">
+                    <button class="lang-btn active" data-lang="en">EN</button>
+                    <button class="lang-btn" data-lang="uk">UK</button>
+                </div>
+
+                <!-- Auth Links (when logged out) -->
+                <div id="auth-links">
+                    <a href="/pages/login.html" class="btn btn-ghost" data-i18n="nav.login">Log In</a>
+                    <a href="/pages/register.html" class="btn btn-primary" data-i18n="nav.register">Sign Up</a>
+                </div>
+
+                <!-- User Links (when logged in) -->
+                <div id="user-links" class="hidden">
+                    <a href="/pages/add-item.html" class="btn btn-primary" data-i18n="nav.addItem">Add Item</a>
+                    <div class="user-dropdown">
+                        <button class="btn btn-ghost user-menu-btn">
+                            <span id="user-name">User</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="/pages/profile.html" data-i18n="nav.profile">Profile</a>
+                            <a href="/pages/my-listings.html" data-i18n="nav.myListings">My Listings</a>
+                            <a href="/pages/my-rentals.html" data-i18n="nav.myRentals">My Rentals</a>
+                            <a href="/pages/favorites.html" data-i18n="nav.favorites">Favorites</a>
+                            <hr>
+                            <a href="#" class="logout-btn" data-i18n="nav.logout">Log Out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav">
+        <a href="/" class="mobile-nav-link" data-i18n="nav.home">Home</a>
+        <a href="/pages/map.html" class="mobile-nav-link" data-i18n="nav.map">Map</a>
+        <a href="/pages/about.html" class="mobile-nav-link" data-i18n="nav.about">About</a>
+        <a href="/pages/contact.html" class="mobile-nav-link" data-i18n="nav.contact">Contact</a>
+        <hr>
+        <div id="mobile-auth-links">
+            <a href="/pages/login.html" class="mobile-nav-link" data-i18n="nav.login">Log In</a>
+            <a href="/pages/register.html" class="mobile-nav-link" data-i18n="nav.register">Sign Up</a>
+        </div>
+        <div id="mobile-user-links" class="hidden">
+            <a href="/pages/add-item.html" class="mobile-nav-link" data-i18n="nav.addItem">Add Item</a>
+            <a href="/pages/profile.html" class="mobile-nav-link" data-i18n="nav.profile">Profile</a>
+            <a href="/pages/my-listings.html" class="mobile-nav-link" data-i18n="nav.myListings">My Listings</a>
+            <a href="/pages/my-rentals.html" class="mobile-nav-link" data-i18n="nav.myRentals">My Rentals</a>
+            <a href="/pages/favorites.html" class="mobile-nav-link" data-i18n="nav.favorites">Favorites</a>
+            <a href="#" class="mobile-nav-link logout-btn" data-i18n="nav.logout">Log Out</a>
+        </div>
+    </div>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container">
+            <h1 data-i18n="profile.title">My Profile</h1>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <section class="section" style="padding-top: 0;">
+        <div class="container">
+            <div class="dashboard-grid">
+                <!-- Sidebar -->
+                <aside class="dashboard-sidebar">
+                    <nav class="sidebar-nav">
+                        <a href="/pages/profile.html" class="sidebar-link active">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            <span data-i18n="nav.profile">Profile</span>
+                        </a>
+                        <a href="/pages/my-listings.html" class="sidebar-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="3" y1="9" x2="21" y2="9"></line>
+                                <line x1="9" y1="21" x2="9" y2="9"></line>
+                            </svg>
+                            <span data-i18n="nav.myListings">My Listings</span>
+                        </a>
+                        <a href="/pages/my-rentals.html" class="sidebar-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                            <span data-i18n="nav.myRentals">My Rentals</span>
+                        </a>
+                        <a href="/pages/favorites.html" class="sidebar-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path
+                                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                                </path>
+                            </svg>
+                            <span data-i18n="nav.favorites">Favorites</span>
+                        </a>
+                        <a href="/pages/add-item.html" class="sidebar-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="16"></line>
+                                <line x1="8" y1="12" x2="16" y2="12"></line>
+                            </svg>
+                            <span data-i18n="nav.addItem">Add Item</span>
+                        </a>
+                    </nav>
+                </aside>
+
+                <!-- Content -->
+                <main class="dashboard-content">
+                    <!-- Profile Card -->
+                    <div id="profile-display" class="profile-card">
+                        <div class="loading-spinner"></div>
+                    </div>
+
+                    <!-- Edit Form -->
+                    <div class="card" style="padding: 2rem;">
+                        <h3 style="margin-bottom: 1.5rem;" data-i18n="profile.editProfile">Edit Profile</h3>
+                        <form id="profile-form">
+                            <div class="form-group">
+                                <label class="form-label" data-i18n="auth.register.name">Full Name</label>
+                                <input type="text" id="name" class="form-input" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" data-i18n="auth.register.email">Email</label>
+                                <input type="email" id="email" class="form-input" disabled>
+                                <p class="form-hint">Email cannot be changed</p>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" data-i18n="auth.register.phone">Phone</label>
+                                <input type="tel" id="phone" class="form-input" placeholder="+380...">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" data-i18n="auth.register.city">City</label>
+                                <select id="city" class="form-input form-select">
+                                    <option value="">Select city</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary" data-i18n="profile.saveChanges">Save
+                                Changes</button>
+                        </form>
+                    </div>
+
+                    <!-- Danger Zone - Delete Account -->
+                    <div class="card danger-zone"
+                        style="padding: 2rem; margin-top: 2rem; border: 1px solid var(--color-error);">
+                        <h3 style="margin-bottom: 1rem; color: var(--color-error);">Danger Zone</h3>
+                        <p style="margin-bottom: 1rem; color: var(--color-gray-600);">
+                            Once you delete your account, there is no going back. All your listings, favorites, and data
+                            will be permanently removed.
+                        </p>
+                        <button type="button" class="btn btn-danger" id="delete-account-btn">
+                            Delete Account
+                        </button>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </section>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Delete Account Confirmation Modal -->
+    <div id="delete-modal-backdrop" class="modal-backdrop">
+        <div id="delete-modal" class="modal" style="max-width: 400px;">
+            <div class="modal-header" style="border-bottom: none; padding-bottom: 0;">
+                <div
+                    style="width: 60px; height: 60px; background: rgba(239, 68, 68, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2">
+                        <path d="M3 6h18"></path>
+                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                    </svg>
+                </div>
+                <h3 style="text-align: center; margin-bottom: 0.5rem;">Delete Account?</h3>
+            </div>
+            <div style="text-align: center; padding: 0 1.5rem 1.5rem;">
+                <p style="color: var(--color-gray-600); margin-bottom: 1.5rem;">
+                    This action cannot be undone. All your listings, favorites, rental history, and personal data will
+                    be permanently deleted.
+                </p>
+                <div style="display: flex; gap: 1rem; justify-content: center;">
+                    <button type="button" class="btn btn-ghost" id="delete-cancel-btn">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="delete-confirm-btn">Delete Account</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/components/legal-modal.js"></script>
+    <script src="/components/cookie-banner.js"></script>
+    <script src="/assets/js/i18n.js"></script>
+    <script src="/assets/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = await checkAuth();
+            if (!user) {
+                window.location.href = '/pages/login.html?return=/pages/profile.html';
+                return;
+            }
+
+            // Load cities
+            try {
+                const data = await api.get('/api/config');
+                const citySelect = document.getElementById('city');
+                (data.cities || []).forEach(city => {
+                    const option = document.createElement('option');
+                    option.value = city;
+                    option.textContent = city;
+                    citySelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Failed to load cities:', error);
+            }
+
+            renderProfile(user);
+            populateForm(user);
+
+            // Form submission
+            document.getElementById('profile-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const name = document.getElementById('name').value.trim();
+                const phone = document.getElementById('phone').value.trim();
+                const city = document.getElementById('city').value;
+
+                try {
+                    const submitBtn = e.target.querySelector('button[type="submit"]');
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = i18n.t('common.loading');
+
+                    const data = await api.put('/api/auth/profile', { name, phone, city });
+
+                    showToast('success', i18n.t('toast.profileUpdated'));
+                    renderProfile(data.user);
+
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = i18n.t('profile.saveChanges');
+
+                } catch (error) {
+                    showToast('error', error.message);
+                    const submitBtn = e.target.querySelector('button[type="submit"]');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = i18n.t('profile.saveChanges');
+                }
+            });
+        });
+
+        async function renderProfile(user) {
+            const container = document.getElementById('profile-display');
+            let ratingHtml = '';
+            try {
+                const ratingData = await api.get('/api/ratings/user/user-' + user.id);
+                if (ratingData.averageScore != null && ratingData.totalCount > 0) {
+                    ratingHtml = `
+                        <p style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem;">
+                            <span style="color: var(--color-warning);">★</span>
+                            <strong>${ratingData.averageScore}</strong>
+                            <span style="font-size: 0.875rem; color: var(--color-gray-500);">(${ratingData.totalCount} ${ratingData.totalCount === 1 ? (i18n.t && i18n.t('rating.review') ? i18n.t('rating.review') : 'review') : (i18n.t && i18n.t('rating.reviews') ? i18n.t('rating.reviews') : 'reviews')})</span>
+                        </p>
+                    `;
+                }
+            } catch (e) {
+                console.error('Failed to load rating', e);
+            }
+            container.innerHTML = `
+                <div class="profile-avatar">
+                    ${user.name ? user.name.charAt(0).toUpperCase() : '?'}
+                </div>
+                <div class="profile-info">
+                    <h2>${escapeHtml(user.name)}</h2>
+                    <p>${escapeHtml(user.email)}</p>
+                    <p>${escapeHtml(user.city || 'No city set')}</p>
+                    ${ratingHtml}
+                    <p style="font-size: 0.875rem; color: var(--color-gray-500); margin-top: 0.5rem;">
+                        ${i18n.t('profile.memberSince')} ${formatDate(user.createdAt)}
+                    </p>
+                </div>
+            `;
+        }
+
+        function populateForm(user) {
+            document.getElementById('name').value = user.name || '';
+            document.getElementById('email').value = user.email || '';
+            document.getElementById('phone').value = user.phone || '';
+            document.getElementById('city').value = user.city || '';
+        }
+
+        // Modal functions
+        function openDeleteModal() {
+            document.getElementById('delete-modal-backdrop').classList.add('active');
+            document.getElementById('delete-modal').classList.add('active');
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('delete-modal-backdrop').classList.remove('active');
+            document.getElementById('delete-modal').classList.remove('active');
+        }
+
+        // Delete account handler
+        function setupDeleteAccount() {
+            const openBtn = document.getElementById('delete-account-btn');
+            const cancelBtn = document.getElementById('delete-cancel-btn');
+            const confirmBtn = document.getElementById('delete-confirm-btn');
+            const backdrop = document.getElementById('delete-modal-backdrop');
+
+            if (!openBtn) return;
+
+            // Open modal when clicking the danger zone button
+            openBtn.addEventListener('click', openDeleteModal);
+
+            // Close modal on cancel
+            cancelBtn.addEventListener('click', closeDeleteModal);
+
+            // Close modal on backdrop click
+            backdrop.addEventListener('click', (e) => {
+                if (e.target === backdrop) closeDeleteModal();
+            });
+
+            // Confirm deletion
+            confirmBtn.addEventListener('click', async () => {
+                try {
+                    confirmBtn.disabled = true;
+                    confirmBtn.textContent = 'Deleting...';
+
+                    const response = await fetch('/api/auth/account', {
+                        method: 'DELETE',
+                        credentials: 'include'
+                    });
+
+                    if (!response.ok) {
+                        const data = await response.json();
+                        throw new Error(data.error || 'Failed to delete account');
+                    }
+
+                    closeDeleteModal();
+                    showToast('success', 'Account deleted successfully');
+
+                    // Redirect to home after a short delay
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 1500);
+
+                } catch (error) {
+                    console.error('Delete account error:', error);
+                    showToast('error', error.message);
+                    confirmBtn.disabled = false;
+                    confirmBtn.textContent = 'Delete Account';
+                }
+            });
+        }
+
+        // Initialize delete account button after DOM loads
+        setupDeleteAccount();
+    </script>
+</body>
+
+</html>

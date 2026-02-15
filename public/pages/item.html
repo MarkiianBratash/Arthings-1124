@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="View item details on Arthings">
+    <title>Item Details - Arthings</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="icon" type="image/png" href="/assets/images/logo.png">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="navbar-brand">
+                <img src="/assets/images/logo.png" alt="Arthings" class="navbar-logo">
+                <span class="navbar-title">Arthings</span>
+            </a>
+
+            <div class="navbar-nav">
+                <a href="/" class="nav-link" data-i18n="nav.home">Home</a>
+                <a href="/pages/map.html" class="nav-link" data-i18n="nav.map">Map</a>
+                <a href="/pages/about.html" class="nav-link" data-i18n="nav.about">About</a>
+                <a href="/pages/contact.html" class="nav-link" data-i18n="nav.contact">Contact</a>
+            </div>
+
+            <div class="navbar-actions">
+                <div class="lang-switcher">
+                    <button class="lang-btn active" data-lang="en">EN</button>
+                    <button class="lang-btn" data-lang="uk">UK</button>
+                </div>
+
+                <!-- Auth Links (when logged out) -->
+                <div id="auth-links">
+                    <a href="/pages/login.html" class="btn btn-ghost" data-i18n="nav.login">Log In</a>
+                    <a href="/pages/register.html" class="btn btn-primary" data-i18n="nav.register">Sign Up</a>
+                </div>
+
+                <!-- User Links (when logged in) -->
+                <div id="user-links" class="hidden">
+                    <a href="/pages/add-item.html" class="btn btn-primary" data-i18n="nav.addItem">Add Item</a>
+                    <div class="user-dropdown">
+                        <button class="btn btn-ghost user-menu-btn">
+                            <span id="user-name">User</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="/pages/profile.html" data-i18n="nav.profile">Profile</a>
+                            <a href="/pages/my-listings.html" data-i18n="nav.myListings">My Listings</a>
+                            <a href="/pages/favorites.html" data-i18n="nav.favorites">Favorites</a>
+                            <hr>
+                            <a href="#" class="logout-btn" data-i18n="nav.logout">Log Out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav">
+        <a href="/" class="mobile-nav-link" data-i18n="nav.home">Home</a>
+        <a href="/pages/map.html" class="mobile-nav-link" data-i18n="nav.map">Map</a>
+        <a href="/pages/about.html" class="mobile-nav-link" data-i18n="nav.about">About</a>
+        <a href="/pages/contact.html" class="mobile-nav-link" data-i18n="nav.contact">Contact</a>
+        <hr>
+        <div id="mobile-auth-links">
+            <a href="/pages/login.html" class="mobile-nav-link" data-i18n="nav.login">Log In</a>
+            <a href="/pages/register.html" class="mobile-nav-link" data-i18n="nav.register">Sign Up</a>
+        </div>
+        <div id="mobile-user-links" class="hidden">
+            <a href="/pages/add-item.html" class="mobile-nav-link" data-i18n="nav.addItem">Add Item</a>
+            <a href="/pages/profile.html" class="mobile-nav-link" data-i18n="nav.profile">Profile</a>
+            <a href="/pages/my-listings.html" class="mobile-nav-link" data-i18n="nav.myListings">My Listings</a>
+            <a href="/pages/favorites.html" class="mobile-nav-link" data-i18n="nav.favorites">Favorites</a>
+            <a href="#" class="mobile-nav-link logout-btn" data-i18n="nav.logout">Log Out</a>
+        </div>
+    </div>
+
+    <!-- Product Detail -->
+    <section class="product-detail">
+        <div id="product-content" class="product-detail-grid">
+            <!-- Content loaded dynamically -->
+            <div style="grid-column: 1 / -1; text-align: center; padding: 4rem;">
+                <div class="loading-spinner" style="margin: 0 auto;"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Delete Modal -->
+    <div id="delete-modal-backdrop" class="modal-backdrop">
+        <div id="delete-modal" class="modal" style="max-width: 400px;">
+            <div class="modal-header" style="border-bottom: none; padding-bottom: 0;">
+                <div
+                    style="width: 60px; height: 60px; background: rgba(239, 68, 68, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2">
+                        <path d="M3 6h18"></path>
+                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                    </svg>
+                </div>
+                <h3 style="text-align: center; margin-bottom: 0.5rem;">Delete Listing?</h3>
+            </div>
+            <div style="text-align: center; padding: 0 1.5rem 1.5rem;">
+                <p style="color: var(--color-gray-600); margin-bottom: 1.5rem;">
+                    Are you sure you want to delete this listing? This action cannot be undone.
+                </p>
+                <div style="display: flex; gap: 1rem; justify-content: center;">
+                    <button type="button" class="btn btn-ghost" onclick="closeDeleteModal()">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirm-delete-btn">Delete Listing</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="/components/legal-modal.js"></script>
+    <script src="/components/cookie-banner.js"></script>
+    <script src="/assets/js/i18n.js"></script>
+    <script src="/assets/js/main.js"></script>
+    <script>
+        let product = null;
+        let isFavorite = false;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await checkAuth();
+
+            const productId = getUrlParam('id');
+            if (!productId) {
+                window.location.href = '/';
+                return;
+            }
+
+            await loadProduct(productId);
+        });
+
+        async function loadProduct(productId) {
+            try {
+                const data = await api.get(`/api/products/${productId}`);
+                product = data.product;
+
+                // Check if favorited
+                if (currentUser) {
+                    try {
+                        const favCheck = await api.get(`/api/favorites/check/${productId}`);
+                        isFavorite = favCheck.isFavorite;
+                    } catch (e) { }
+                }
+
+                renderProduct();
+                document.title = `${product.title} - Arthings`;
+
+            } catch (error) {
+                document.getElementById('product-content').innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 4rem;">
+                        <h2>Product not found</h2>
+                        <p style="margin: 1rem 0;">This item may have been removed</p>
+                        <a href="/" class="btn btn-primary">Browse Items</a>
+                    </div>
+                `;
+            }
+        }
+
+        function renderProduct() {
+            const container = document.getElementById('product-content');
+            const isOwner = currentUser && currentUser.id === product.userId;
+            const categoryName = getCategoryName(product.category);
+            const priceUnit = product.priceUnit === 'week' ? i18n.t('product.perWeek') : i18n.t('product.perDay');
+
+            // Main image
+            const mainImage = product.images && product.images.length > 0
+                ? product.images[0]
+                : '/assets/images/placeholder.png';
+
+            container.innerHTML = `
+                <!-- Gallery -->
+                <div class="product-gallery">
+                    <div class="product-main-image">
+                        <img id="main-image" src="${mainImage}" alt="${escapeHtml(product.title)}">
+                    </div>
+                    ${product.images && product.images.length > 1 ? `
+                        <div class="product-thumbnails">
+                            ${product.images.map((img, idx) => `
+                                <div class="product-thumbnail ${idx === 0 ? 'active' : ''}" onclick="changeImage('${img}', this)">
+                                    <img src="${img}" alt="Thumbnail ${idx + 1}">
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+
+                <!-- Info -->
+                <div class="product-info">
+                    <span class="product-category">${categoryName}</span>
+                    <h1 class="product-title">${escapeHtml(product.title)}</h1>
+                    
+                    <div class="product-meta">
+                        <div class="product-meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            <span>${escapeHtml(product.city || 'Unknown')}</span>
+                        </div>
+                        <div class="product-meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            <span>${product.views} ${i18n.t('product.views')}</span>
+                        </div>
+                        <div class="product-meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            <span>${formatDate(product.createdAt)}</span>
+                        </div>
+                    </div>
+
+                    <div class="product-price-card">
+                        <p class="product-price-label">Rental Price</p>
+                        <p class="product-price-value">₴${product.price} <span>/ ${priceUnit}</span></p>
+                    </div>
+
+                    <div class="product-description">
+                        <h3 data-i18n="detail.description">Description</h3>
+                        <p>${escapeHtml(product.description)}</p>
+                    </div>
+
+                    ${!isOwner ? `
+                        <div class="product-actions">
+                            <a href="/pages/rent.html?id=${product.id}" class="btn btn-primary btn-lg" ${!product.available ? 'style="pointer-events: none; opacity: 0.5;"' : ''}>
+                                ${product.available ? i18n.t('product.rentNow') : i18n.t('product.notAvailable')}
+                            </a>
+                            <button class="btn btn-outline btn-lg" id="favorite-btn" onclick="handleFavorite()">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="${isFavorite ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2">
+                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                </svg>
+                                <span>${isFavorite ? i18n.t('product.removeFromFavorites') : i18n.t('product.addToFavorites')}</span>
+                            </button>
+                        </div>
+                    ` : `
+                        <div class="product-actions">
+                            <button class="btn btn-primary btn-lg" onclick="editProduct()">
+                                ${i18n.t('product.edit')}
+                            </button>
+                            <button class="btn btn-outline btn-lg" style="border-color: var(--color-error); color: var(--color-error);" onclick="openDeleteModal()">
+                                ${i18n.t('product.delete')}
+                            </button>
+                        </div>
+                    `}
+
+                    <div class="owner-card">
+                        <div class="owner-avatar">
+                            ${product.ownerName ? product.ownerName.charAt(0).toUpperCase() : '?'}
+                        </div>
+                        <div class="owner-info">
+                            <h4>${escapeHtml(product.ownerName || 'Unknown')}</h4>
+                            <p>${escapeHtml(product.ownerCity || 'Location not specified')}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function changeImage(src, thumbnail) {
+            document.getElementById('main-image').src = src;
+            document.querySelectorAll('.product-thumbnail').forEach(t => t.classList.remove('active'));
+            thumbnail.classList.add('active');
+        }
+
+        async function handleFavorite() {
+            if (!currentUser) {
+                showToast('warning', 'Please log in to save favorites');
+                window.location.href = `/pages/login.html?return=/pages/item.html?id=${product.id}`;
+                return;
+            }
+
+            const btn = document.getElementById('favorite-btn');
+            const svg = btn.querySelector('svg');
+
+            try {
+                if (isFavorite) {
+                    await api.delete(`/api/favorites/${product.id}`);
+                    isFavorite = false;
+                    svg.setAttribute('fill', 'none');
+                    btn.querySelector('span').textContent = i18n.t('product.addToFavorites');
+                    showToast('success', i18n.t('toast.favoriteRemoved'));
+                } else {
+                    await api.post(`/api/favorites/${product.id}`);
+                    isFavorite = true;
+                    svg.setAttribute('fill', 'currentColor');
+                    btn.querySelector('span').textContent = i18n.t('product.removeFromFavorites');
+                    showToast('success', i18n.t('toast.favoriteAdded'));
+                }
+            } catch (error) {
+                showToast('error', error.message);
+            }
+        }
+
+        function editProduct() {
+            // For simplicity, redirect to a simple edit mode
+            // In a full implementation, this would open an edit form
+            showToast('info', 'Edit functionality - redirecting to My Listings');
+            window.location.href = '/pages/my-listings.html';
+        }
+
+        // Delete Modal Functions
+        window.openDeleteModal = function () {
+            document.getElementById('delete-modal-backdrop').classList.add('active');
+            document.getElementById('delete-modal').classList.add('active');
+        };
+
+        window.closeDeleteModal = function () {
+            document.getElementById('delete-modal-backdrop').classList.remove('active');
+            document.getElementById('delete-modal').classList.remove('active');
+        };
+
+        // Setup modal listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            const confirmBtn = document.getElementById('confirm-delete-btn');
+
+            confirmBtn.addEventListener('click', async () => {
+                if (!product) return;
+
+                confirmBtn.disabled = true;
+                confirmBtn.textContent = 'Deleting...';
+
+                try {
+                    await api.delete(`/api/products/${product.id}`);
+                    showToast('success', i18n.t('toast.itemDeleted'));
+                    window.closeDeleteModal();
+                    // Redirect after short delay
+                    setTimeout(() => {
+                        window.location.href = '/pages/my-listings.html';
+                    }, 1000);
+                } catch (error) {
+                    showToast('error', error.message);
+                    confirmBtn.disabled = false;
+                    confirmBtn.textContent = 'Delete Listing';
+                }
+            });
+
+            // Close on backdrop click
+            document.getElementById('delete-modal-backdrop').addEventListener('click', (e) => {
+                if (e.target === e.currentTarget) {
+                    window.closeDeleteModal();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
