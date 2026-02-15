@@ -1,97 +1,64 @@
-# Database Setup – MariaDB (local) & Vercel
+# Database Setup – PostgreSQL (Vercel + local)
 
-This project uses **MySQL/MariaDB** with Prisma. You can use local MariaDB and a cloud MySQL database when deploying to Vercel.
+This project uses **PostgreSQL** with Prisma. Sessions are stored in Postgres (persistent across serverless invocations).
 
 ---
 
-## 1. Local: MariaDB (arthings)
+## 1. Add database in Vercel
 
-Your MariaDB data directory: `C:\Program Files\MariaDB 12.1\data\arthings` → database name: **arthings**.
+1. Go to [Vercel Dashboard](https://vercel.com/dashboard) → your project
+2. Open the **Storage** tab
+3. Click **Create Database**
+4. Choose **Neon** or **Prisma Postgres** (Postgres providers)
+5. Select region and plan → Create
+6. Click **Connect to Project** and select your Arthings project
 
-### 1.1 Ensure the database exists
+This adds `DATABASE_URL` to your project. Redeploy after connecting.
 
-In MariaDB (e.g. HeidiSQL or command line):
+---
 
-```sql
-CREATE DATABASE IF NOT EXISTS arthings
-  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_unicode_ci;
-```
+## 2. Apply schema and seed
 
-### 1.2 Connection string in `.env`
+The build runs `prisma db push` automatically. After the first deploy:
 
-Copy `.env.example` to `.env` and set:
+1. Get your `DATABASE_URL` from Vercel: **Settings** → **Environment Variables**
+2. Copy it into your local `.env`
+3. Run:
+   ```bash
+   npm run db:seed
+   ```
+   (This seeds categories and cities. Run once.)
 
-```env
-# Replace YOUR_PASSWORD with your MariaDB user password
-# Default user is often 'root'
-DATABASE_URL="mysql://root:YOUR_PASSWORD@localhost:3306/arthings"
-```
+---
 
-If you use another user:
+## 3. Local development
 
-```env
-DATABASE_URL="mysql://arthings_user:YOUR_PASSWORD@localhost:3306/arthings"
-```
-
-### 1.3 Apply schema and seed
+Use the same Postgres `DATABASE_URL` (Neon / Prisma Postgres) in `.env` for local dev, or create a separate Neon project for local.
 
 ```bash
 npm run db:generate
 npm run db:push
 npm run db:seed
+npm run dev
 ```
 
 ---
 
-## 2. Vercel: database when deployed
+## 4. Environment variables
 
-Vercel does not host MySQL; it offers Postgres (e.g. Vercel Postgres / Neon). This app uses **MySQL/MariaDB**, so you need an external MySQL-compatible host and set `DATABASE_URL` on Vercel.
-
-### 2.1 Create a cloud MySQL database
-
-Use one of:
-
-- **PlanetScale** (free tier): https://planetscale.com  
-- **Railway** (MySQL): https://railway.app  
-- **Any MySQL/MariaDB host** (e.g. Aiven, ScaleGrid, your VPS)
-
-Get the **MySQL connection string** (e.g. `mysql://user:pass@host:3306/dbname`).
-
-### 2.2 Set `DATABASE_URL` on Vercel
-
-1. Open your project on [Vercel Dashboard](https://vercel.com/dashboard).
-2. **Settings** → **Environment Variables**.
-3. Add:
-   - **Name:** `DATABASE_URL`
-   - **Value:** your cloud MySQL URL (same format as local).
-4. Redeploy so the new variable is used.
-
-### 2.3 First deploy: run migrations on the cloud DB
-
-After the first deploy, run migrations against the **cloud** database (with `DATABASE_URL` pointing to it). Either:
-
-- Temporarily set `DATABASE_URL` in your local `.env` to the cloud URL and run:
-  - `npm run db:push`
-  - `npm run db:seed`
-- Or use your provider’s SQL console / CLI to run the same schema and seed logic.
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `DATABASE_URL` | Yes | Postgres connection string (set by Vercel when you connect the DB) |
+| `SESSION_SECRET` | Yes | Random string for sessions (set in Vercel env) |
+| `ADMIN_EMAIL` | No | Email for admin account |
 
 ---
 
-## 3. Quick reference
-
-| Environment | DATABASE_URL example |
-|-------------|-----------------------|
-| Local (MariaDB) | `mysql://root:PASSWORD@localhost:3306/arthings` |
-| Vercel (cloud MySQL) | `mysql://user:PASSWORD@host:3306/dbname` (from PlanetScale, Railway, etc.) |
-
----
-
-## 4. Useful commands
+## 5. Useful commands
 
 ```bash
 npm run db:generate   # Regenerate Prisma client
-npm run db:push       # Push schema to DB (no data loss)
-npm run db:seed       # Seed categories, cities, etc.
+npm run db:push       # Push schema to DB (runs in vercel-build)
+npm run db:seed       # Seed categories, cities (run once after first deploy)
 npm run db:studio     # Open Prisma Studio
 ```

@@ -3,7 +3,7 @@
  * Arthings - Database Seed Script
  * ===========================================
  * 
- * Seeds MySQL/MariaDB database with default data
+ * Seeds PostgreSQL database with default data
  * Run with: npm run db:seed
  */
 

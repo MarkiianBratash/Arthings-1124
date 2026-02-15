@@ -4,7 +4,7 @@
  * ===========================================
  * 
  * Peer-to-peer rental platform for local communities
- * Database: MariaDB (local) / MySQL (Vercel via env DATABASE_URL)
+ * Database: PostgreSQL (Neon / Vercel Postgres)
  */
 
 // Load environment variables first
@@ -37,17 +37,28 @@ app.set('trust proxy', 1);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Session configuration
-app.use(session({
+// Session configuration - use Postgres store on Vercel so sessions persist across serverless invocations
+const sessionConfig = {
     secret: process.env.SESSION_SECRET || 'arthings-secret-key-2025',
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: process.env.NODE_ENV === 'production', // HTTPS in production
+        secure: process.env.NODE_ENV === 'production',
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000 // 24 hours
     }
-}));
+};
+
+const dbUrl = process.env.DATABASE_URL || '';
+if (dbUrl.startsWith('postgres')) {
+    const { Pool } = require('pg');
+    const ConnectPgSimple = require('connect-pg-simple');
+    const pgSession = ConnectPgSimple(session);
+    const pool = new Pool({ connectionString: dbUrl, ssl: { rejectUnauthorized: false } });
+    sessionConfig.store = new pgSession({ pool, createTableIfMissing: true });
+}
+
+app.use(session(sessionConfig));
 
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
@@ -153,7 +164,7 @@ if (!process.env.VERCEL) {
     ║   🎯 ARTHINGS - Rental Platform                          ║
     ║                                                           ║
     ║   Server running at: http://localhost:${PORT}               ║
-    ║   Database: MariaDB / MySQL (via Prisma)                 ║
+    ║   Database: PostgreSQL (via Prisma)                      ║
     ║                                                           ║
     ║   Ready to connect communities!                          ║
     ║                                                           ║

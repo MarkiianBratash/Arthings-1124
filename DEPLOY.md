@@ -35,23 +35,20 @@
    - **Add New** → **Project** → **Import** your GitHub repository
    - Leave build settings as default (Vercel will use `vercel.json`)
 
-2. **Add environment variables**
-   - In the Vercel project: **Settings** → **Environment Variables**
-   - Add:
-     - `DATABASE_URL` = your **cloud MySQL** connection string (PlanetScale, Railway, or any MySQL/MariaDB host)
-     - `SESSION_SECRET` = a long random string for sessions
-     - `ADMIN_EMAIL` = (optional) email for admin account
+2. **Add the database** (see [DATABASE.md](DATABASE.md))
+   - **Storage** tab → **Create Database** → choose **Neon** or **Prisma Postgres**
+   - **Connect to Project** – this sets `DATABASE_URL` automatically
 
-3. **Deploy**
-   - **Deploy** (or push to `main` after the repo is connected to trigger a deploy)
+3. **Add other environment variables**
+   - **Settings** → **Environment Variables**
+   - Add `SESSION_SECRET` = a long random string
+   - Add `ADMIN_EMAIL` = (optional) your email for admin
 
-4. **Apply schema to the production database**
-   - Set `DATABASE_URL` in your local `.env` to the **same** cloud MySQL URL used on Vercel
-   - Run:
-     ```bash
-     npm run db:push
-     npm run db:seed
-     ```
-   - Then switch `.env` back to your local MariaDB URL if needed.
+4. **Deploy**
+   - Deploy (or push to `main` after the repo is connected to trigger a deploy)
 
-For full database setup (local MariaDB + cloud MySQL), see [DATABASE.md](DATABASE.md).
+5. **Seed the database** (after first deploy)
+   - Copy `DATABASE_URL` from Vercel → local `.env`
+   - Run: `npm run db:seed`
+
+See [DATABASE.md](DATABASE.md) for details.

@@ -54,11 +54,11 @@ router.get('/', async (req, res) => {
         // Build where clause
         const where = {};
 
-        // Filter by search query (title and description)
+        // Filter by search query (title and description) - mode: insensitive for Postgres
         if (search) {
             where.OR = [
-                { title: { contains: search } },
-                { description: { contains: search } }
+                { title: { contains: search, mode: 'insensitive' } },
+                { description: { contains: search, mode: 'insensitive' } }
             ];
         }
 

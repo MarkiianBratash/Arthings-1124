@@ -2,14 +2,14 @@
 // Arthings - Prisma Schema
 // ===========================================
 // This file defines the database schema for the Arthings rental platform.
-// Supports: local MariaDB (arthings) and cloud MySQL for Vercel (e.g. PlanetScale, Railway).
+// Uses PostgreSQL for Vercel (Neon, Prisma Postgres) and local dev.
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -231,7 +231,7 @@ model Category {
   id     String @id @db.VarChar(50)
   name   String @db.VarChar(100)
   nameUk String @map("name_uk") @db.VarChar(100)
-  icon   String @db.VarChar(10)
+  icon   String @db.VarChar(50)
 
   @@map("categories")
 }
